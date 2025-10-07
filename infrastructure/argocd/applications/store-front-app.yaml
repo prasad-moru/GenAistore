@@ -1,0 +1,77 @@
+# infrastructure/argocd/applications/store-front-app.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: store-front
+  namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: storefront=prasad890/store-front
+    argocd-image-updater.argoproj.io/storefront.update-strategy: semver
+    argocd-image-updater.argoproj.io/storefront.allow-tags: regexp:^[0-9]+\.[0-9]+\.[0-9]+:.+$
+    argocd-image-updater.argoproj.io/storefront.ignore-tags: latest, dev, staging
+    argocd-image-updater.argoproj.io/write-back-method: git
+    argocd-image-updater.argoproj.io/write-back-target: "kustomization:helm-charts/store-front"
+    argocd-image-updater.argoproj.io/git-branch: main
+    
+    notifications.argoproj.io/subscribe.on-sync-succeeded.slack: argocd-notifications
+    notifications.argoproj.io/subscribe.on-sync-failed.slack: argocd-notifications
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    app.kubernetes.io/name: store-front
+    app.kubernetes.io/part-of: store-app
+    deployment-strategy: bluegreen
+spec:
+  project: default
+  
+  source:
+    repoURL: https://github.com/<YOUR_ORG>/<YOUR_REPO>.git
+    targetRevision: main
+    path: helm-charts/store-front
+    helm:
+      releaseName: store-front
+      valueFiles:
+        - values.yaml
+      values: |
+        image:
+          tag: "1.0.0:initial"
+        
+        datadog:
+          enabled: true
+          env: production
+        
+        analysis:
+          enabled: true
+          provider: datadog
+        
+        istio:
+          gateway:
+            enabled: true
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
+      allowEmpty: false
+    syncOptions:
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+  
+  ignoreDifferences:
+    - group: argoproj.io
+      kind: Rollout
+      jsonPointers:
+        - /spec/replicas
+  
+  revisionHistoryLimit: 10

@@ -1,0 +1,63 @@
+# infrastructure/argocd/applications/virtual-worker-app.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: virtual-worker
+  namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: virtualworker=prasad890/store-virtual-worker
+    argocd-image-updater.argoproj.io/virtualworker.update-strategy: semver
+    argocd-image-updater.argoproj.io/virtualworker.allow-tags: regexp:^[0-9]+\.[0-9]+\.[0-9]+:.+$
+    argocd-image-updater.argoproj.io/virtualworker.ignore-tags: latest, dev, staging
+    argocd-image-updater.argoproj.io/write-back-method: git
+    argocd-image-updater.argoproj.io/write-back-target: "kustomization:helm-charts/virtual-worker"
+    argocd-image-updater.argoproj.io/git-branch: main
+    
+    notifications.argoproj.io/subscribe.on-sync-succeeded.slack: argocd-notifications
+    notifications.argoproj.io/subscribe.on-sync-failed.slack: argocd-notifications
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    app.kubernetes.io/name: virtual-worker
+    app.kubernetes.io/part-of: store-app
+    deployment-strategy: rolling
+spec:
+  project: default
+  
+  source:
+    repoURL: https://github.com/<YOUR_ORG>/<YOUR_REPO>.git
+    targetRevision: main
+    path: helm-charts/virtual-worker
+    helm:
+      releaseName: virtual-worker
+      valueFiles:
+        - values.yaml
+      values: |
+        image:
+          tag: "1.0.0:initial"
+        
+        datadog:
+          enabled: true
+          env: production
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
+      allowEmpty: false
+    syncOptions:
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+  
+  revisionHistoryLimit: 10

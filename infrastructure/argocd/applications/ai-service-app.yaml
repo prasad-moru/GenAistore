@@ -1,0 +1,78 @@
+# infrastructure/argocd/applications/ai-service-app.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ai-service
+  namespace: argocd
+  annotations:
+    # ArgoCD Image Updater annotations
+    argocd-image-updater.argoproj.io/image-list: ai=prasad890/store-ai-service
+    argocd-image-updater.argoproj.io/ai.update-strategy: semver
+    argocd-image-updater.argoproj.io/ai.allow-tags: regexp:^[0-9]+\.[0-9]+\.[0-9]+:.+$
+    argocd-image-updater.argoproj.io/ai.ignore-tags: latest, dev, staging
+    argocd-image-updater.argoproj.io/write-back-method: git
+    argocd-image-updater.argoproj.io/write-back-target: "kustomization:helm-charts/ai-service"
+    argocd-image-updater.argoproj.io/git-branch: main
+    
+    # Notifications (optional)
+    notifications.argoproj.io/subscribe.on-sync-succeeded.slack: argocd-notifications
+    notifications.argoproj.io/subscribe.on-sync-failed.slack: argocd-notifications
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    app.kubernetes.io/name: ai-service
+    app.kubernetes.io/part-of: store-app
+    deployment-strategy: canary
+spec:
+  project: default
+  
+  source:
+    repoURL: https://github.com/<YOUR_ORG>/<YOUR_REPO>.git  # REPLACE WITH YOUR REPO
+    targetRevision: main
+    path: helm-charts/ai-service
+    helm:
+      releaseName: ai-service
+      valueFiles:
+        - values.yaml
+      # Optional: Override values
+      values: |
+        image:
+          tag: "1.0.0:initial"  # Will be updated by Image Updater
+        
+        datadog:
+          enabled: true
+          env: production
+        
+        analysis:
+          enabled: true
+          provider: datadog
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  
+  syncPolicy:
+    automated:
+      prune: false      # Don't auto-delete resources
+      selfHeal: false   # Manual approval required
+      allowEmpty: false
+    syncOptions:
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+  
+  # Health assessment
+  ignoreDifferences:
+    - group: argoproj.io
+      kind: Rollout
+      jsonPointers:
+        - /spec/replicas
+  
+  # RevisionHistoryLimit
+  revisionHistoryLimit: 10

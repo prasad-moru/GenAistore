@@ -1,0 +1,30 @@
+{{- if .Values.analysis.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: {{ include "store-admin.fullname" . }}-analysis
+  labels:
+    {{- include "store-admin.labels" . | nindent 4 }}
+spec:
+  metrics:
+  {{- if eq .Values.analysis.provider "datadog" }}
+  {{- range .Values.analysis.datadog.metrics }}
+  - name: {{ .name }}
+    provider:
+      datadog:
+        apiKey:
+          secretKeyRef:
+            name: {{ $.Values.analysis.datadog.apiKeySecret.name }}
+            key: {{ $.Values.analysis.datadog.apiKeySecret.key }}
+        appKey:
+          secretKeyRef:
+            name: {{ $.Values.analysis.datadog.appKeySecret.name }}
+            key: {{ $.Values.analysis.datadog.appKeySecret.key }}
+        query: {{ .query | quote }}
+    successCondition: {{ .successCondition | quote }}
+    failureLimit: {{ .failureLimit }}
+    interval: {{ .interval }}
+    count: {{ .count }}
+  {{- end }}
+  {{- end }}
+{{- end }}

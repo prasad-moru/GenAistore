@@ -1,0 +1,73 @@
+# infrastructure/argocd/applications/makeline-service-app.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: makeline-service
+  namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: makeline=prasad890/store-makeline-service
+    argocd-image-updater.argoproj.io/makeline.update-strategy: semver
+    argocd-image-updater.argoproj.io/makeline.allow-tags: regexp:^[0-9]+\.[0-9]+\.[0-9]+:.+$
+    argocd-image-updater.argoproj.io/makeline.ignore-tags: latest, dev, staging
+    argocd-image-updater.argoproj.io/write-back-method: git
+    argocd-image-updater.argoproj.io/write-back-target: "kustomization:helm-charts/makeline-service"
+    argocd-image-updater.argoproj.io/git-branch: main
+    
+    notifications.argoproj.io/subscribe.on-sync-succeeded.slack: argocd-notifications
+    notifications.argoproj.io/subscribe.on-sync-failed.slack: argocd-notifications
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    app.kubernetes.io/name: makeline-service
+    app.kubernetes.io/part-of: store-app
+    deployment-strategy: canary
+spec:
+  project: default
+  
+  source:
+    repoURL: https://github.com/<YOUR_ORG>/<YOUR_REPO>.git
+    targetRevision: main
+    path: helm-charts/makeline-service
+    helm:
+      releaseName: makeline-service
+      valueFiles:
+        - values.yaml
+      values: |
+        image:
+          tag: "1.0.0:initial"
+        
+        datadog:
+          enabled: true
+          env: production
+        
+        analysis:
+          enabled: true
+          provider: datadog
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
+      allowEmpty: false
+    syncOptions:
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+  
+  ignoreDifferences:
+    - group: argoproj.io
+      kind: Rollout
+      jsonPointers:
+        - /spec/replicas
+  
+  revisionHistoryLimit: 10

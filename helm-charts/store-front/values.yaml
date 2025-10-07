@@ -1,0 +1,182 @@
+# helm-charts/store-front/values.yaml
+replicaCount: 1
+
+image:
+  repository: prasad890/store-front
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: "store-front"
+
+service:
+  name: store-front
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+
+# Argo Rollouts Strategy - BLUE-GREEN
+strategy:
+  type: blueGreen
+  blueGreen:
+    activeService: store-front
+    previewService: store-front-preview
+    autoPromotionEnabled: true  # Automatic promotion
+    autoPromotionSeconds: 300   # Wait 5 minutes before auto-promote
+    scaleDownDelaySeconds: 300  # Keep old version for 5 min after promotion
+    prePromotionAnalysis:
+      templates:
+        - templateName: store-front-analysis
+    postPromotionAnalysis:
+      templates:
+        - templateName: store-front-analysis
+
+# Istio Configuration
+istio:
+  enabled: true
+  gateway:
+    enabled: true  # Frontend needs external access
+    name: store-gateway
+    hosts:
+      - "*"
+  virtualService:
+    enabled: true
+    hosts:
+      - "*"
+    gateways:
+      - store-gateway
+    http:
+      - match:
+        - uri:
+            prefix: "/"
+        route:
+        - destination:
+            host: store-front
+            port:
+              number: 80
+  destinationRule:
+    enabled: false  # Not needed for Blue-Green
+
+# HPA Configuration
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+        - type: Percent
+          value: 50
+          periodSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 0
+      policies:
+        - type: Percent
+          value: 100
+          periodSeconds: 30
+
+# Resource limits
+resources:
+  requests:
+    cpu: 1m
+    memory: 200Mi
+  limits:
+    cpu: 1000m
+    memory: 512Mi
+
+# Probes
+probes:
+  startup:
+    httpGet:
+      path: /health
+      port: 8080
+    initialDelaySeconds: 5
+    failureThreshold: 3
+    periodSeconds: 5
+  readiness:
+    httpGet:
+      path: /health
+      port: 8080
+    initialDelaySeconds: 3
+    failureThreshold: 3
+    periodSeconds: 3
+  liveness:
+    httpGet:
+      path: /health
+      port: 8080
+    initialDelaySeconds: 3
+    failureThreshold: 5
+    periodSeconds: 3
+
+# Environment variables
+env:
+  - name: VUE_APP_ORDER_SERVICE_URL
+    value: "http://order-service:3000/"
+  - name: VUE_APP_PRODUCT_SERVICE_URL
+    value: "http://product-service:3002/"
+
+# Vault Configuration - DISABLED
+vault:
+  enabled: false
+
+# Datadog Configuration
+datadog:
+  enabled: true
+  env: production
+  service: store-front
+  version: "{{ .Values.image.tag }}"
+  logs:
+    enabled: true
+  apm:
+    enabled: false  # Frontend - use RUM instead
+  profiling:
+    enabled: false
+
+# Prometheus Metrics
+metrics:
+  enabled: false
+  serviceMonitor:
+    enabled: false
+
+# Node selector
+nodeSelector:
+  kubernetes.io/os: linux
+
+tolerations: []
+affinity: {}
+podAnnotations: {}
+podLabels: {}
+
+# Analysis Template Configuration
+analysis:
+  enabled: true
+  provider: datadog
+  datadog:
+    apiKeySecret:
+      name: datadog-secret
+      key: api-key
+    appKeySecret:
+      name: datadog-secret
+      key: app-key
+    metrics:
+      - name: error-rate
+        query: "avg:trace.http.request.errors{service:store-front,env:production}.as_rate()"
+        successCondition: "result < 0.05"
+        failureLimit: 3
+        interval: 1m
+        count: 5
+      - name: http-success-rate
+        query: "sum:trace.http.request.hits{service:store-front,env:production,http.status_code:200}.as_count() / sum:trace.http.request.hits{service:store-front,env:production}.as_count()"
+        successCondition: "result > 0.95"
+        failureLimit: 3
+        interval: 1m
+        count: 5
