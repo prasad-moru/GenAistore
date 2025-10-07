@@ -1,0 +1,77 @@
+---
+# ===================================================================
+# FILE: helm-charts/rabbitmq/templates/statefulset.yaml
+# ===================================================================
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "rabbitmq.fullname" . }}
+  labels:
+    {{- include "rabbitmq.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "rabbitmq.fullname" . }}
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "rabbitmq.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "rabbitmq.selectorLabels" . | nindent 8 }}
+      annotations:
+        {{- if .Values.metrics.enabled }}
+        {{- toYaml .Values.metrics.annotations | nindent 8 }}
+        {{- end }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ include "rabbitmq.serviceAccountName" . }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+      - name: rabbitmq
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - name: rabbitmq-amqp
+          containerPort: {{ .Values.service.ports.amqp.targetPort }}
+          protocol: TCP
+        - name: rabbitmq-http
+          containerPort: {{ .Values.service.ports.management.targetPort }}
+          protocol: TCP
+        - name: prometheus
+          containerPort: {{ .Values.service.ports.prometheus.targetPort }}
+          protocol: TCP
+        env:
+        - name: RABBITMQ_DEFAULT_USER
+          value: {{ .Values.auth.username | quote }}
+        - name: RABBITMQ_DEFAULT_PASS
+          value: {{ .Values.auth.password | quote }}
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}
+        volumeMounts:
+        - name: rabbitmq-enabled-plugins
+          mountPath: /etc/rabbitmq/enabled_plugins
+          subPath: enabled_plugins
+      volumes:
+      - name: rabbitmq-enabled-plugins
+        configMap:
+          name: {{ include "rabbitmq.fullname" . }}-enabled-plugins
+          items:
+          - key: rabbitmq_enabled_plugins
+            path: enabled_plugins
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
