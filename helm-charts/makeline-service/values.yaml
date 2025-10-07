@@ -18,8 +18,8 @@ serviceAccount:
 service:
   name: makeline-service
   type: ClusterIP
-  port: 3002
-  targetPort: 3002
+  port: 3001
+  targetPort: 3001
 
 # Argo Rollouts Strategy - Same as makeline-service
 strategy:
@@ -108,21 +108,21 @@ probes:
   startup:
     httpGet:
       path: /health
-      port: 3000
+      port: 3001
     initialDelaySeconds: 20
     failureThreshold: 5
     periodSeconds: 10
   readiness:
     httpGet:
       path: /health
-      port: 3000
+      port: 3001
     initialDelaySeconds: 3
     failureThreshold: 3
     periodSeconds: 5
   liveness:
     httpGet:
       path: /health
-      port: 3000
+      port: 3001
     initialDelaySeconds: 3
     failureThreshold: 5
     periodSeconds: 3
@@ -144,18 +144,6 @@ env:
   - name: ORDER_DB_COLLECTION_NAME
     value: "orders"
 
-# Init Container for RabbitMQ readiness
-initContainers:
-  - name: wait-for-rabbitmq
-    image: busybox
-    command: ['sh', '-c', 'until nc -zv rabbitmq 5672; do echo waiting for rabbitmq; sleep 2; done;']
-    resources:
-      requests:
-        cpu: 1m
-        memory: 50Mi
-      limits:
-        cpu: 100m
-        memory: 256Mi
 
 # Vault Configuration - DISABLED for makeline-service
 vault:

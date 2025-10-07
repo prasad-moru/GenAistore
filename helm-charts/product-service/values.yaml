@@ -1,8 +1,8 @@
-# helm-charts/order-service/values.yaml
+# helm-charts/product-service/values.yaml
 replicaCount: 1
 
 image:
-  repository: prasad890/store-order-service
+  repository: prasad890/store-product-service
   tag: "latest"
   pullPolicy: IfNotPresent
 
@@ -13,15 +13,15 @@ fullnameOverride: ""
 serviceAccount:
   create: true
   annotations: {}
-  name: "order-service"
+  name: "product-service"
 
 service:
-  name: order-service
+  name: product-service
   type: ClusterIP
   port: 3002
   targetPort: 3002
 
-# Argo Rollouts Strategy - Same as order-service
+# Argo Rollouts Strategy - Same as product-service
 strategy:
   type: canary
   canary:
@@ -31,30 +31,30 @@ strategy:
           duration: 5m
       - analysis:
           templates:
-            - templateName: order-service-analysis
+            - templateName: product-service-analysis
       - setWeight: 40
       - pause:
           duration: 5m
       - analysis:
           templates:
-            - templateName: order-service-analysis
+            - templateName: product-service-analysis
       - setWeight: 60
       - pause:
           duration: 5m
       - analysis:
           templates:
-            - templateName: order-service-analysis
+            - templateName: product-service-analysis
       - setWeight: 80
       - pause:
           duration: 5m
       - analysis:
           templates:
-            - templateName: order-service-analysis
+            - templateName: product-service-analysis
       - setWeight: 100
     trafficRouting:
       istio:
         virtualService:
-          name: order-service
+          name: product-service
           routes:
             - primary
     analysisInterval: 1m
@@ -69,7 +69,7 @@ istio:
   virtualService:
     enabled: true
     hosts:
-      - order-service
+      - product-service
   destinationRule:
     enabled: true
 
@@ -132,20 +132,8 @@ env:
   - name: AI_SERVICE_URL
     value: "http://ai-service:5001/"
 
-# Init Container for RabbitMQ readiness
-initContainers:
-  - name: wait-for-rabbitmq
-    image: busybox
-    command: ['sh', '-c', 'until nc -zv rabbitmq 5672; do echo waiting for rabbitmq; sleep 2; done;']
-    resources:
-      requests:
-        cpu: 1m
-        memory: 50Mi
-      limits:
-        cpu: 100m
-        memory: 256Mi
 
-# Vault Configuration - DISABLED for order-service
+# Vault Configuration - DISABLED for product-service
 vault:
   enabled: false
 
@@ -193,15 +181,16 @@ analysis:
       key: app-key
     metrics:
       - name: error-rate
-        query: "avg:trace.http.request.errors{service:order-service,env:production}.as_rate()"
+        query: "avg:trace.http.request.errors{service:product-service,env:production}.as_rate()"
         successCondition: "result < 0.05"
         failureLimit: 3
         interval: 1m
         count: 5
       - name: p95-latency
-        query: "avg:trace.http.request.duration.by.service.95p{service:order-service,env:production}"
+        query: "avg:trace.http.request.duration.by.service.95p{service:product-service,env:production}"
         successCondition: "result < 1000"
         failureLimit: 3
         interval: 1m
         count: 5
+        
 initContainers: []        

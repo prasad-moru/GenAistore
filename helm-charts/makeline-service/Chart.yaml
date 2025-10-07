@@ -1,6 +1,6 @@
 apiVersion: v2
 name: makeline-service
-description: Order Service with Canary Deployment Strategy
+description: Makeline Service with Canary Deployment Strategy
 type: application
 version: 1.0.0
 appVersion: "1.0.0"
