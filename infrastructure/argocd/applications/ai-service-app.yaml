@@ -6,7 +6,7 @@ metadata:
   namespace: argocd
   annotations:
     # ArgoCD Image Updater annotations
-    argocd-image-updater.argoproj.io/image-list: ai=prasad890/store-ai-service
+    argocd-image-updater.argoproj.io/image-list: ai=614520203046.dkr.ecr.us-east-1.amazonaws.com/ai-service:1.0.0-6897d17
     argocd-image-updater.argoproj.io/ai.update-strategy: semver
     argocd-image-updater.argoproj.io/ai.allow-tags: regexp:^[0-9]+\.[0-9]+\.[0-9]+:.+$
     argocd-image-updater.argoproj.io/ai.ignore-tags: latest, dev, staging
