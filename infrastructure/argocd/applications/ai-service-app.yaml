@@ -27,7 +27,7 @@ spec:
   project: default
   
   source:
-    repoURL: https://github.com/<YOUR_ORG>/<YOUR_REPO>.git  # REPLACE WITH YOUR REPO
+    repoURL: https://github.com/prasad-moru/GenAiStoreApp.git  # REPLACE WITH YOUR REPO
     targetRevision: main
     path: helm-charts/ai-service
     helm:
@@ -49,7 +49,7 @@ spec:
   
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
+    namespace: application
   
   syncPolicy:
     automated:
