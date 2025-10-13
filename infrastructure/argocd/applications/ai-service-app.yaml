@@ -5,16 +5,14 @@ metadata:
   name: ai-service
   namespace: argocd
   annotations:
-    # ArgoCD Image Updater annotations
-    argocd-image-updater.argoproj.io/image-list: ai=614520203046.dkr.ecr.us-east-1.amazonaws.com/ai-service:1.0.0-6897d17
+    argocd-image-updater.argoproj.io/image-list: ai=614520203046.dkr.ecr.us-east-1.amazonaws.com/ai-service
     argocd-image-updater.argoproj.io/ai.update-strategy: semver
-    argocd-image-updater.argoproj.io/ai.allow-tags: regexp:^[0-9]+\.[0-9]+\.[0-9]+:.+$
+    argocd-image-updater.argoproj.io/ai.allow-tags: regexp:^[0-9]+\.[0-9]+\.[0-9]+-.+$
     argocd-image-updater.argoproj.io/ai.ignore-tags: latest, dev, staging
     argocd-image-updater.argoproj.io/write-back-method: git
     argocd-image-updater.argoproj.io/write-back-target: "kustomization:helm-charts/ai-service"
     argocd-image-updater.argoproj.io/git-branch: main
     
-    # Notifications (optional)
     notifications.argoproj.io/subscribe.on-sync-succeeded.slack: argocd-notifications
     notifications.argoproj.io/subscribe.on-sync-failed.slack: argocd-notifications
   finalizers:
@@ -27,17 +25,16 @@ spec:
   project: default
   
   source:
-    repoURL: https://github.com/prasad-moru/GenAiStoreApp.git  # REPLACE WITH YOUR REPO
+    repoURL: https://github.com/prasad-moru/GenAiStoreApp.git
     targetRevision: main
     path: helm-charts/ai-service
     helm:
       releaseName: ai-service
       valueFiles:
         - values.yaml
-      # Optional: Override values
       values: |
         image:
-          tag: "1.0.0:initial"  # Will be updated by Image Updater
+          tag: "1.0.0-6897d17"
         
         datadog:
           enabled: true
@@ -53,8 +50,8 @@ spec:
   
   syncPolicy:
     automated:
-      prune: false      # Don't auto-delete resources
-      selfHeal: false   # Manual approval required
+      prune: false
+      selfHeal: false
       allowEmpty: false
     syncOptions:
       - CreateNamespace=true
@@ -67,12 +64,10 @@ spec:
         factor: 2
         maxDuration: 3m
   
-  # Health assessment
   ignoreDifferences:
     - group: argoproj.io
       kind: Rollout
       jsonPointers:
         - /spec/replicas
   
-  # RevisionHistoryLimit
   revisionHistoryLimit: 10
