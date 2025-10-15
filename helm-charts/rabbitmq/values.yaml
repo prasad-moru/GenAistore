@@ -44,6 +44,12 @@ vault:
         export RABBITMQ_DEFAULT_USER="{{ .Data.data.username }}"
         export RABBITMQ_DEFAULT_PASS="{{ .Data.data.password }}"
         {{- end -}}
+
+# RabbitMQ authentication (fallback values)
+auth:
+  username: username
+  password: password
+  
 # RabbitMQ plugins to enable
 plugins:
   enabled:
