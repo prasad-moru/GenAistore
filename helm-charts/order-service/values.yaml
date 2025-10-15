@@ -2,8 +2,8 @@
 replicaCount: 1
 
 image:
-  repository: prasad890/store-order-service
-  tag: "latest"
+  repository: 614520203046.dkr.ecr.us-east-1.amazonaws.com/order-service
+  tag: "1.0.0-e3a80fd"
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -130,13 +130,9 @@ probes:
 # Environment variables
 env:
   - name: ORDER_QUEUE_HOSTNAME
-    value: "rabbitmq"
+    value: "rabbitmq.platform.svc.cluster.local"  # Changed!
   - name: ORDER_QUEUE_PORT
     value: "5672"
-  - name: ORDER_QUEUE_USERNAME
-    value: "username"
-  - name: ORDER_QUEUE_PASSWORD
-    value: "password"
   - name: ORDER_QUEUE_NAME
     value: "orders"
   - name: FASTIFY_ADDRESS
@@ -157,7 +153,16 @@ initContainers:
 
 # Vault Configuration - DISABLED for order-service
 vault:
-  enabled: false
+  enabled: true
+  role: "order-service"
+  secrets:
+    rabbitmq:
+      path: "kv/data/order-service"
+      template: |
+        {{- with secret "kv/data/order-service" -}}
+        export ORDER_QUEUE_USERNAME="{{ .Data.data.rabbitmq_username }}"
+        export ORDER_QUEUE_PASSWORD="{{ .Data.data.rabbitmq_password }}"
+        {{- end -}}
 
 # Datadog Configuration
 datadog:
@@ -195,22 +200,17 @@ analysis:
   enabled: true
   provider: datadog
   datadog:
-    apiKeySecret:
-      name: datadog-secret
-      key: api-key
-    appKeySecret:
-      name: datadog-secret
-      key: app-key
+    secretName: datadog-secret  # Simplified format like ai-service
     metrics:
       - name: error-rate
         query: "avg:trace.http.request.errors{service:order-service,env:production}.as_rate()"
-        successCondition: "result < 0.05"
+        successCondition: "default(result, 0) < 0.05"  # Added default()
         failureLimit: 3
         interval: 1m
         count: 5
       - name: p95-latency
         query: "avg:trace.http.request.duration.by.service.95p{service:order-service,env:production}"
-        successCondition: "result < 1000"
+        successCondition: "default(result, 0) < 1000"  # Added default()
         failureLimit: 3
         interval: 1m
         count: 5

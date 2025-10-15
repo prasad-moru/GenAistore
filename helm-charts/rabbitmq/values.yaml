@@ -33,10 +33,17 @@ service:
       targetPort: 15692
 
 # RabbitMQ authentication
-auth:
-  username: username
-  password: password
-
+vault:
+  enabled: true
+  role: "rabbitmq"
+  secrets:
+    credentials:
+      path: "kv/data/rabbitmq"
+      template: |
+        {{- with secret "kv/data/rabbitmq" -}}
+        export RABBITMQ_DEFAULT_USER="{{ .Data.data.username }}"
+        export RABBITMQ_DEFAULT_PASS="{{ .Data.data.password }}"
+        {{- end -}}
 # RabbitMQ plugins to enable
 plugins:
   enabled:
