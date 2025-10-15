@@ -9,9 +9,7 @@ metadata:
     argocd-image-updater.argoproj.io/ai.update-strategy: semver
     argocd-image-updater.argoproj.io/ai.allow-tags: regexp:^[0-9]+\.[0-9]+\.[0-9]+-.+$
     argocd-image-updater.argoproj.io/ai.ignore-tags: latest, dev, staging
-    argocd-image-updater.argoproj.io/write-back-method: git
-    argocd-image-updater.argoproj.io/write-back-target: "kustomization:helm-charts/ai-service"
-    argocd-image-updater.argoproj.io/git-branch: main
+    argocd-image-updater.argoproj.io/write-back-method: argocd
     
     notifications.argoproj.io/subscribe.on-sync-succeeded.slack: argocd-notifications
     notifications.argoproj.io/subscribe.on-sync-failed.slack: argocd-notifications
@@ -32,17 +30,6 @@ spec:
       releaseName: ai-service
       valueFiles:
         - values.yaml
-      values: |
-        image:
-          tag: "1.0.0-6897d17"
-        
-        datadog:
-          enabled: true
-          env: production
-        
-        analysis:
-          enabled: true
-          provider: datadog
   
   destination:
     server: https://kubernetes.default.svc
@@ -50,7 +37,7 @@ spec:
   
   syncPolicy:
     automated:
-      prune: false
+      prune: true
       selfHeal: false
       allowEmpty: false
     syncOptions:

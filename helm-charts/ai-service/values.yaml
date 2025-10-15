@@ -4,8 +4,8 @@
 replicaCount: 1
 
 image:
-  repository: 614520203046.dkr.ecr.us-east-1.amazonaws.com/ai-service:1.0.0-6897d17
-  tag: "1.0.0"  # This will be updated by ArgoCD Image Updater
+  repository: 614520203046.dkr.ecr.us-east-1.amazonaws.com/ai-service
+  tag: "1.0.0-becab97"
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -78,10 +78,10 @@ istio:
 # HPA Configuration
 autoscaling:
   enabled: true
-  minReplicas: 1
-  maxReplicas: 10
-  targetCPUUtilizationPercentage: 70
-  targetMemoryUtilizationPercentage: 80
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 85
   behavior:
     scaleDown:
       stabilizationWindowSeconds: 300
@@ -99,11 +99,11 @@ autoscaling:
 # Resource limits
 resources:
   requests:
-    cpu: 20m
-    memory: 50Mi
-  limits:
-    cpu: 50m
+    cpu: 100m
     memory: 128Mi
+  limits:
+    cpu: 200m
+    memory: 256Mi
 
 # Probes
 probes:
@@ -147,9 +147,9 @@ vault:
   enabled: true
   role: "ai-service"
   secrets:
-    - path: "kv/data/ai-service"
+    openai:  # Named key instead of array
+      path: "kv/data/ai-service"
       template: |
-        #!/bin/sh
         {{- with secret "kv/data/ai-service" -}}
         export OPENAI_API_KEY="{{ .Data.data.openai_api_key }}"
         export OPENAI_ORG_ID="{{ .Data.data.openai_org_id }}"
@@ -161,7 +161,7 @@ datadog:
   enabled: true
   env: production
   service: ai-service
-  version: "{{ .Values.image.tag }}"
+  # version: "{{ .Values.image.tag }}"
   logs:
     enabled: true
   apm:
@@ -197,24 +197,19 @@ podLabels: {}
 # Analysis Template Configuration
 analysis:
   enabled: true
-  provider: datadog  # datadog or prometheus
+  provider: datadog
   datadog:
-    apiKeySecret:
-      name: datadog-secret
-      key: api-key
-    appKeySecret:
-      name: datadog-secret
-      key: app-key
+    secretName: datadog-secret  # Simplified - just the secret name
     metrics:
       - name: error-rate
         query: "avg:trace.http.request.errors{service:ai-service,env:production}.as_rate()"
-        successCondition: "result < 0.05"  # <5% error rate
+        successCondition: "default(result, 0) < 0.05"  # Added default() for nil handling
         failureLimit: 3
         interval: 1m
         count: 5
       - name: p95-latency
         query: "avg:trace.http.request.duration.by.service.95p{service:ai-service,env:production}"
-        successCondition: "result < 1000"  # <1000ms
+        successCondition: "default(result, 0) < 1000"  # Added default() for nil handling
         failureLimit: 3
         interval: 1m
         count: 5
