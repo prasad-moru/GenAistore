@@ -7,7 +7,7 @@ metadata:
   annotations:
     argocd-image-updater.argoproj.io/image-list: order=614520203046.dkr.ecr.us-east-1.amazonaws.com/order-service
     argocd-image-updater.argoproj.io/order.update-strategy: semver
-    argocd-image-updater.argoproj.io/order.allow-tags: regexp:^[0-9]+\.[0-9]+\.[0-9]+:.+$
+    argocd-image-updater.argoproj.io/order.allow-tags: regexp:^[0-9]+\.[0-9]+\.[0-9]+-.+$
     argocd-image-updater.argoproj.io/order.ignore-tags: latest, dev, staging
     argocd-image-updater.argoproj.io/write-back-method: argocd
     
@@ -30,25 +30,14 @@ spec:
       releaseName: order-service
       valueFiles:
         - values.yaml
-      values: |
-        image:
-          tag: "1.0.0:initial"
-        
-        datadog:
-          enabled: true
-          env: production
-        
-        analysis:
-          enabled: true
-          provider: datadog
   
   destination:
     server: https://kubernetes.default.svc
-    namespace: application  
+    namespace: application
   
   syncPolicy:
     automated:
-      prune: false
+      prune: true
       selfHeal: false
       allowEmpty: false
     syncOptions:
