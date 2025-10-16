@@ -1,7 +1,4 @@
----
-# ===================================================================
-# FILE: helm-charts/rabbitmq/templates/configmap.yaml
-# ===================================================================
+# helm-charts/rabbitmq/templates/configmap.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -9,5 +6,5 @@ metadata:
   labels:
     {{- include "rabbitmq.labels" . | nindent 4 }}
 data:
-  rabbitmq_enabled_plugins: |
+  enabled_plugins: |
     [{{ range $i, $plugin := .Values.plugins.enabled }}{{ if $i }},{{ end }}{{ $plugin }}{{ end }}].
