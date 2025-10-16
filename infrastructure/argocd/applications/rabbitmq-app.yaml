@@ -24,17 +24,10 @@ spec:
       valueFiles:
         - values.yaml
   
-  destination:
+    destination:
     server: https://kubernetes.default.svc
-    namespace: platform
-  
+    namespace: platform 
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-      allowEmpty: false
-    syncOptions:
-      - CreateNamespace=true
-      - PrunePropagationPolicy=foreground
-  
-  revisionHistoryLimit: 10
