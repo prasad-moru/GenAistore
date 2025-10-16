@@ -17,15 +17,15 @@ spec:
   selector:
     {{- include "rabbitmq.selectorLabels" . | nindent 4 }}
   ports:
-  - name: rabbitmq-amqp
+  - name: amqp
     port: {{ .Values.service.ports.amqp.port }}
     targetPort: {{ .Values.service.ports.amqp.targetPort }}
     protocol: TCP
-  - name: rabbitmq-http
+  - name: management
     port: {{ .Values.service.ports.management.port }}
     targetPort: {{ .Values.service.ports.management.targetPort }}
     protocol: TCP
-  - name: rabbitmq-prometheus
+  - name: prometheus
     port: {{ .Values.service.ports.prometheus.port }}
     targetPort: {{ .Values.service.ports.prometheus.targetPort }}
     protocol: TCP

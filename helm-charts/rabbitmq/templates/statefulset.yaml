@@ -1,3 +1,7 @@
+---
+# ===================================================================
+# FILE: helm-charts/rabbitmq/templates/statefulset.yaml
+# ===================================================================
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -20,7 +24,7 @@ spec:
         vault.hashicorp.com/role: {{ .Values.vault.role | quote }}
         vault.hashicorp.com/agent-inject-secret-credentials.env: {{ .Values.vault.secrets.credentials.path | quote }}
         vault.hashicorp.com/agent-inject-template-credentials.env: |
-{{- .Values.vault.secrets.credentials.template | nindent 10 }}
+          {{- .Values.vault.secrets.credentials.template | nindent 10 }}
         {{- end }}
         {{- if .Values.metrics.enabled }}
         {{- toYaml .Values.metrics.annotations | nindent 8 }}
@@ -90,7 +94,7 @@ spec:
         resources:
           {{- toYaml .Values.resources | nindent 10 }}
         volumeMounts:
-        - name: rabbitmq-enabled-plugins
+        - name: config
           mountPath: /etc/rabbitmq/enabled_plugins
           subPath: enabled_plugins
         {{- if .Values.persistence.enabled }}
@@ -98,7 +102,7 @@ spec:
           mountPath: /var/lib/rabbitmq
         {{- end }}
       volumes:
-      - name: rabbitmq-enabled-plugins
+      - name: config
         configMap:
           name: {{ include "rabbitmq.fullname" . }}-enabled-plugins
           items:
