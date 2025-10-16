@@ -21,7 +21,7 @@ service:
   port: 3002
   targetPort: 3002
 
-# Argo Rollouts Strategy
+# Argo Rollouts Strategy - Same as product-service
 strategy:
   type: canary
   canary:
@@ -51,6 +51,15 @@ strategy:
           templates:
             - templateName: product-service-analysis
       - setWeight: 100
+    trafficRouting:
+      istio:
+        virtualService:
+          name: product-service
+          routes:
+            - primary
+    analysisInterval: 1m
+    analysisSuccessCount: 5
+    analysisFailureLimit: 3
 
 # Istio Configuration
 istio:
@@ -64,7 +73,7 @@ istio:
   destinationRule:
     enabled: true
 
-# HPA Configuration - FAST SCALING
+# HPA Configuration - Fast Scaling (1-6 replicas)
 autoscaling:
   enabled: true
   minReplicas: 1
@@ -73,25 +82,26 @@ autoscaling:
   targetMemoryUtilizationPercentage: 80
   behavior:
     scaleDown:
-      stabilizationWindowSeconds: 60
+      stabilizationWindowSeconds: 60    # Wait 1 minute before scaling down
       policies:
         - type: Percent
-          value: 100
-          periodSeconds: 15
+          value: 100                     # Can scale down 100% per period
+          periodSeconds: 15              # Check every 15 seconds
         - type: Pods
-          value: 2
+          value: 2                       # Can remove up to 2 pods at once
           periodSeconds: 15
-      selectPolicy: Max
+      selectPolicy: Max                  # Use the policy that scales down faster
     scaleUp:
-      stabilizationWindowSeconds: 0
+      stabilizationWindowSeconds: 0      # Scale up immediately
       policies:
         - type: Percent
-          value: 100
-          periodSeconds: 15
+          value: 100                     # Double pods per period
+          periodSeconds: 15              # Check every 15 seconds
         - type: Pods
-          value: 3
+          value: 3                       # Can add up to 3 pods at once
           periodSeconds: 15
-      selectPolicy: Max
+      selectPolicy: Max  
+
 
 # Resource limits
 resources:
@@ -102,26 +112,26 @@ resources:
     cpu: 100m
     memory: 256Mi
 
-# Probes - FIXED PORTS
+# Probes
 probes:
   startup:
     httpGet:
       path: /health
-      port: 3002  # FIXED from 3000
+      port: 3002
     initialDelaySeconds: 20
     failureThreshold: 5
     periodSeconds: 10
   readiness:
     httpGet:
       path: /health
-      port: 3002  # FIXED from 3000
+      port: 3002
     initialDelaySeconds: 3
     failureThreshold: 3
     periodSeconds: 5
   liveness:
     httpGet:
       path: /health
-      port: 3002  # FIXED from 3000
+      port: 3002
     initialDelaySeconds: 3
     failureThreshold: 5
     periodSeconds: 3
@@ -131,7 +141,8 @@ env:
   - name: AI_SERVICE_URL
     value: "http://ai-service:5001/"
 
-# Vault Configuration - DISABLED
+
+# Vault Configuration - DISABLED for product-service
 vault:
   enabled: false
 
@@ -140,11 +151,12 @@ datadog:
   enabled: true
   env: production
   service: product-service
+  version: "{{ .Values.image.tag }}"
   logs:
     enabled: true
   apm:
     enabled: true
-    language: nodejs
+    language: nodejs  # Node.js auto-instrumentation
   profiling:
     enabled: false
 
@@ -170,19 +182,24 @@ analysis:
   enabled: true
   provider: datadog
   datadog:
-    secretName: datadog-secret
+    apiKeySecret:
+      name: datadog-secret
+      key: api-key
+    appKeySecret:
+      name: datadog-secret
+      key: app-key
     metrics:
       - name: error-rate
         query: "avg:trace.http.request.errors{service:product-service,env:production}.as_rate()"
-        successCondition: "default(result, 0) < 0.05"
+        successCondition: "result < 0.05"
         failureLimit: 3
         interval: 1m
         count: 5
       - name: p95-latency
         query: "avg:trace.http.request.duration.by.service.95p{service:product-service,env:production}"
-        successCondition: "default(result, 0) < 1000"
+        successCondition: "result < 1000"
         failureLimit: 3
         interval: 1m
         count: 5
-
-initContainers: []
+        
+initContainers: []        

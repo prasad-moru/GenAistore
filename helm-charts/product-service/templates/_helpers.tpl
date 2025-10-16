@@ -1,14 +1,14 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "order-service.name" -}}
+{{- define "product-service.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Create a default fully qualified app name.
 */}}
-{{- define "order-service.fullname" -}}
+{{- define "product-service.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -24,16 +24,16 @@ Create a default fully qualified app name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "order-service.chart" -}}
+{{- define "product-service.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "order-service.labels" -}}
-helm.sh/chart: {{ include "order-service.chart" . }}
-{{ include "order-service.selectorLabels" . }}
+{{- define "product-service.labels" -}}
+helm.sh/chart: {{ include "product-service.chart" . }}
+{{ include "product-service.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,18 +45,18 @@ app.kubernetes.io/component: backend
 {{/*
 Selector labels
 */}}
-{{- define "order-service.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "order-service.name" . }}
+{{- define "product-service.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "product-service.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-app: {{ include "order-service.name" . }}
+app: {{ include "product-service.name" . }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "order-service.serviceAccountName" -}}
+{{- define "product-service.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "order-service.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "product-service.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
@@ -65,7 +65,7 @@ Create the name of the service account to use
 {{/*
 Datadog labels for unified service tagging
 */}}
-{{- define "order-service.datadogLabels" -}}
+{{- define "product-service.datadogLabels" -}}
 {{- if .Values.datadog.enabled }}
 tags.datadoghq.com/env: {{ .Values.datadog.env | quote }}
 tags.datadoghq.com/service: {{ .Values.datadog.service | quote }}
@@ -76,7 +76,7 @@ tags.datadoghq.com/version: {{ .Values.image.tag | quote }}
 {{/*
 Datadog annotations for auto-instrumentation
 */}}
-{{- define "order-service.datadogAnnotations" -}}
+{{- define "product-service.datadogAnnotations" -}}
 {{- if .Values.datadog.enabled }}
 {{- if .Values.datadog.apm.enabled }}
 admission.datadoghq.com/enabled: "true"
