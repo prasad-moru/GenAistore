@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "order-service.fullname" . }}
+  name: {{ include "product-service.fullname" . }}
   labels:
-    {{- include "order-service.labels" . | nindent 4 }}
+    {{- include "product-service.labels" . | nindent 4 }}
   annotations:
     {{- if .Values.metrics.enabled }}
     prometheus.io/scrape: "true"
@@ -18,4 +18,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "order-service.selectorLabels" . | nindent 4 }}
+    {{- include "product-service.selectorLabels" . | nindent 4 }}

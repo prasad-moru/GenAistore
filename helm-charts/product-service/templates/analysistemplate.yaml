@@ -2,9 +2,9 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:
-  name: {{ include "order-service.fullname" . }}-analysis
+  name: {{ include "product-service.fullname" . }}-analysis
   labels:
-    {{- include "order-service.labels" . | nindent 4 }}
+    {{- include "product-service.labels" . | nindent 4 }}
 spec:
   metrics:
   {{- if eq .Values.analysis.provider "datadog" }}
