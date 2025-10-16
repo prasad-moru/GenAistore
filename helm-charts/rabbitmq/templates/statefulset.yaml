@@ -1,7 +1,3 @@
----
-# ===================================================================
-# FILE: helm-charts/rabbitmq/templates/statefulset.yaml
-# ===================================================================
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -55,32 +51,58 @@ spec:
             docker-entrypoint.sh rabbitmq-server
         {{- end }}
         ports:
-        - name: rabbitmq-amqp
+        - name: amqp
           containerPort: {{ .Values.service.ports.amqp.targetPort }}
           protocol: TCP
-        - name: rabbitmq-http
+        - name: management
           containerPort: {{ .Values.service.ports.management.targetPort }}
           protocol: TCP
         - name: prometheus
           containerPort: {{ .Values.service.ports.prometheus.targetPort }}
           protocol: TCP
         env:
+        {{- if not .Values.vault.enabled }}
         - name: RABBITMQ_DEFAULT_USER
           value: {{ .Values.auth.username | quote }}
         - name: RABBITMQ_DEFAULT_PASS
           value: {{ .Values.auth.password | quote }}
+        {{- end }}
+        livenessProbe:
+          exec:
+            command:
+            - rabbitmq-diagnostics
+            - -q
+            - ping
+          initialDelaySeconds: 120
+          periodSeconds: 30
+          timeoutSeconds: 20
+          failureThreshold: 6
+        readinessProbe:
+          exec:
+            command:
+            - rabbitmq-diagnostics
+            - -q
+            - check_running
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 20
+          failureThreshold: 3
         resources:
           {{- toYaml .Values.resources | nindent 10 }}
         volumeMounts:
         - name: rabbitmq-enabled-plugins
           mountPath: /etc/rabbitmq/enabled_plugins
           subPath: enabled_plugins
+        {{- if .Values.persistence.enabled }}
+        - name: data
+          mountPath: /var/lib/rabbitmq
+        {{- end }}
       volumes:
       - name: rabbitmq-enabled-plugins
         configMap:
           name: {{ include "rabbitmq.fullname" . }}-enabled-plugins
           items:
-          - key: rabbitmq_enabled_plugins
+          - key: enabled_plugins
             path: enabled_plugins
       {{- with .Values.affinity }}
       affinity:
@@ -90,3 +112,17 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+  {{- if .Values.persistence.enabled }}
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+      labels:
+        {{- include "rabbitmq.labels" . | nindent 8 }}
+    spec:
+      accessModes:
+        - {{ .Values.persistence.accessMode }}
+      storageClassName: {{ .Values.persistence.storageClass }}
+      resources:
+        requests:
+          storage: {{ .Values.persistence.size }}
+  {{- end }}
