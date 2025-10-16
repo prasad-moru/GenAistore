@@ -2,8 +2,8 @@
 replicaCount: 1
 
 image:
-  repository: prasad890/store-product-service
-  tag: "latest"
+  repository: 614520203046.dkr.ecr.us-east-1.amazonaws.com/product-service
+  tag: "1.0.1-d9558fa"
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -177,27 +177,23 @@ affinity: {}
 podAnnotations: {}
 podLabels: {}
 
+
 # Analysis Template Configuration
 analysis:
   enabled: true
   provider: datadog
   datadog:
-    apiKeySecret:
-      name: datadog-secret
-      key: api-key
-    appKeySecret:
-      name: datadog-secret
-      key: app-key
+    secretName: datadog-secret
     metrics:
       - name: error-rate
         query: "avg:trace.http.request.errors{service:product-service,env:production}.as_rate()"
-        successCondition: "result < 0.05"
+        successCondition: "default(result, 0) < 0.05"
         failureLimit: 3
         interval: 1m
         count: 5
       - name: p95-latency
         query: "avg:trace.http.request.duration.by.service.95p{service:product-service,env:production}"
-        successCondition: "result < 1000"
+        successCondition: "default(result, 0) < 1000"
         failureLimit: 3
         interval: 1m
         count: 5
