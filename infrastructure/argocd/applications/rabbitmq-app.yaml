@@ -3,30 +3,21 @@ kind: Application
 metadata:
   name: rabbitmq
   namespace: argocd
-  annotations:
-    notifications.argoproj.io/subscribe.on-sync-succeeded.slack: argocd-notifications
-    notifications.argoproj.io/subscribe.on-sync-failed.slack: argocd-notifications
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
-  labels:
-    app.kubernetes.io/name: rabbitmq
-    app.kubernetes.io/part-of: store-app
-    deployment-strategy: standard
 spec:
   project: default
-  
   source:
-    repoURL: https://github.com/prasad-moru/GenAiStoreApp.git
-    targetRevision: main
+    repoURL: 'https://github.com/prasad-moru/GenAiStoreApp.git'
     path: helm-charts/rabbitmq
+    targetRevision: HEAD
     helm:
       releaseName: rabbitmq
       valueFiles:
         - values.yaml
-  
-    destination:
-    server: https://kubernetes.default.svc
+
+  destination:
+    server: 'https://kubernetes.default.svc'
     namespace: platform 
+
   syncPolicy:
     automated:
       prune: true
