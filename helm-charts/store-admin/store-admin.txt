@@ -1,0 +1,3 @@
+kubectl create ns frontend
+
+store admin application is created into frontend namespace. 

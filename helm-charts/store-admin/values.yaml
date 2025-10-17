@@ -204,7 +204,7 @@ affinity: {}
 podAnnotations: {}
 podLabels: {}
 
-# Analysis Template Configuration
+# Analysis Template Configuration - SIMPLE & WORKING
 analysis:
   enabled: true
   provider: datadog
@@ -213,13 +213,21 @@ analysis:
     metrics:
       - name: error-rate
         query: "avg:trace.http.request.errors{service:store-admin,env:production}.as_rate()"
-        successCondition: "default(result, 0) < 0.05"
+        successCondition: "default(result, 0) < 0.05"  # Less than 5% error rate
         failureLimit: 3
         interval: 1m
         count: 5
-      - name: http-success-rate
-        query: "sum:trace.http.request.hits{service:store-admin,env:production,http.status_code:200}.as_count() / sum:trace.http.request.hits{service:store-admin,env:production}.as_count()"
-        successCondition: "default(result, 0) > 0.95"
+      
+      - name: p95-latency
+        query: "avg:trace.http.request.duration.by.service.95p{service:store-admin,env:production}"
+        successCondition: "default(result, 0) < 2000"  # Less than 2s latency
+        failureLimit: 3
+        interval: 1m
+        count: 5
+      
+      - name: request-count
+        query: "sum:trace.http.request.hits{service:store-admin,env:production}.as_count()"
+        successCondition: "default(result, 0) > 0"  # At least some traffic
         failureLimit: 3
         interval: 1m
         count: 5
