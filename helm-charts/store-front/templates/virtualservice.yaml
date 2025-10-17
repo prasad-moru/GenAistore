@@ -3,18 +3,19 @@ apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: {{ include "store-front.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "store-front.labels" . | nindent 4 }}
 spec:
   hosts:
-    {{- toYaml .Values.istio.virtualService.hosts | nindent 4 }}
-  gateways:
-    {{- toYaml .Values.istio.virtualService.gateways | nindent 4 }}
+    - {{ include "store-front.fullname" . }}
+    - {{ include "store-front.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
   http:
-  {{- range .Values.istio.virtualService.http }}
-  - match:
-    {{- toYaml .match | nindent 4 }}
+  - name: primary
     route:
-    {{- toYaml .route | nindent 4 }}
-  {{- end }}
+    - destination:
+        host: {{ include "store-front.fullname" . }}
+        port:
+          number: {{ .Values.service.port }}
+      weight: 100
 {{- end }}
