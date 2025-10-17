@@ -2,6 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
   name: {{ include "store-admin.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "store-admin.labels" . | nindent 4 }}
 spec:
