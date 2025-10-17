@@ -5,13 +5,11 @@ metadata:
   name: store-admin
   namespace: argocd
   annotations:
-    argocd-image-updater.argoproj.io/image-list: storeadmin=prasad890/store-admin
-    argocd-image-updater.argoproj.io/storeadmin.update-strategy: semver
-    argocd-image-updater.argoproj.io/storeadmin.allow-tags: regexp:^[0-9]+\.[0-9]+\.[0-9]+:.+$
-    argocd-image-updater.argoproj.io/storeadmin.ignore-tags: latest, dev, staging
-    argocd-image-updater.argoproj.io/write-back-method: git
-    argocd-image-updater.argoproj.io/write-back-target: "kustomization:helm-charts/store-admin"
-    argocd-image-updater.argoproj.io/git-branch: main
+    argocd-image-updater.argoproj.io/image-list: storeadmin=614520203046.dkr.ecr.us-east-1.amazonaws.com/store-admin
+    argocd-image-updater.argoproj.io/order.update-strategy: semver
+    argocd-image-updater.argoproj.io/order.allow-tags: regexp:^[0-9]+\.[0-9]+\.[0-9]+-.+$
+    argocd-image-updater.argoproj.io/order.ignore-tags: latest, dev, staging
+    argocd-image-updater.argoproj.io/write-back-method: argocd
     
     notifications.argoproj.io/subscribe.on-sync-succeeded.slack: argocd-notifications
     notifications.argoproj.io/subscribe.on-sync-failed.slack: argocd-notifications
@@ -20,41 +18,26 @@ metadata:
   labels:
     app.kubernetes.io/name: store-admin
     app.kubernetes.io/part-of: store-app
-    deployment-strategy: bluegreen
+    deployment-strategy: canary
 spec:
   project: default
   
   source:
-    repoURL: https://github.com/<YOUR_ORG>/<YOUR_REPO>.git
+    repoURL: https://github.com/prasad-moru/GenAiStoreApp.git
     targetRevision: main
     path: helm-charts/store-admin
     helm:
       releaseName: store-admin
       valueFiles:
         - values.yaml
-      values: |
-        image:
-          tag: "1.0.0:initial"
-        
-        datadog:
-          enabled: true
-          env: production
-        
-        analysis:
-          enabled: true
-          provider: datadog
-        
-        istio:
-          gateway:
-            enabled: false  # Uses store-gateway
   
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
+    namespace: application
   
   syncPolicy:
     automated:
-      prune: false
+      prune: true
       selfHeal: false
       allowEmpty: false
     syncOptions:
