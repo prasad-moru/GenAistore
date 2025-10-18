@@ -1,21 +1,29 @@
-{{- if and .Values.istio.enabled .Values.istio.virtualService.enabled }}
-apiVersion: networking.istio.io/v1beta1
-kind: VirtualService
+{{- if .Values.analysis.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
 metadata:
-  name: {{ include "store-front.fullname" . }}
+  name: {{ include "store-front.fullname" . }}-analysis
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "store-front.labels" . | nindent 4 }}
 spec:
-  hosts:
-    - {{ include "store-front.fullname" . }}
-    - {{ include "store-front.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
-  http:
-  - name: primary
-    route:
-    - destination:
-        host: {{ include "store-front.fullname" . }}
-        port:
-          number: {{ .Values.service.port }}
-      weight: 100
+  metrics:
+  {{- if eq .Values.analysis.provider "datadog" }}
+  {{- range .Values.analysis.datadog.metrics }}
+  - name: {{ .name }}
+    interval: {{ .interval }}
+    count: {{ .count }}
+    failureLimit: {{ .failureLimit }}
+    successCondition: {{ .successCondition | quote }}
+    provider:
+      datadog:
+        apiVersion: v2
+        interval: 5m
+        secretRef:
+          name: {{ $.Values.analysis.datadog.secretName }}
+          namespaced: true
+        queries:
+          q: {{ .query | quote }}
+  {{- end }}
+  {{- end }}
 {{- end }}

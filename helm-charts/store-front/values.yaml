@@ -3,7 +3,7 @@ replicaCount: 1
 
 image:
   repository: 614520203046.dkr.ecr.us-east-1.amazonaws.com/store-front
-  tag: "1.0.0-76fd7df"  # ⚠️ CHANGE from "latest" to specific version, using latest one
+  tag: "1.0.0-76fd7df"  # ⚠️ CHANGE from "latest" to specific version
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
