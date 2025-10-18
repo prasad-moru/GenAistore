@@ -1,60 +1,43 @@
-# infrastructure/argocd/applications/store-front-app.yaml
+# infrastructure/argocd/applications/store-admin-app.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: store-front
+  name: store-admin
   namespace: argocd
   annotations:
-    argocd-image-updater.argoproj.io/image-list: storefront=prasad890/store-front
-    argocd-image-updater.argoproj.io/storefront.update-strategy: semver
-    argocd-image-updater.argoproj.io/storefront.allow-tags: regexp:^[0-9]+\.[0-9]+\.[0-9]+:.+$
-    argocd-image-updater.argoproj.io/storefront.ignore-tags: latest, dev, staging
-    argocd-image-updater.argoproj.io/write-back-method: git
-    argocd-image-updater.argoproj.io/write-back-target: "kustomization:helm-charts/store-front"
-    argocd-image-updater.argoproj.io/git-branch: main
+    argocd-image-updater.argoproj.io/image-list: storeadmin=614520203046.dkr.ecr.us-east-1.amazonaws.com/store-admin
+    argocd-image-updater.argoproj.io/order.update-strategy: semver
+    argocd-image-updater.argoproj.io/order.allow-tags: regexp:^[0-9]+\.[0-9]+\.[0-9]+-.+$
+    argocd-image-updater.argoproj.io/order.ignore-tags: latest, dev, staging
+    argocd-image-updater.argoproj.io/write-back-method: argocd
     
     notifications.argoproj.io/subscribe.on-sync-succeeded.slack: argocd-notifications
     notifications.argoproj.io/subscribe.on-sync-failed.slack: argocd-notifications
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    app.kubernetes.io/name: store-front
+    app.kubernetes.io/name: store-admin
     app.kubernetes.io/part-of: store-app
-    deployment-strategy: bluegreen
+    deployment-strategy: canary
 spec:
   project: default
   
   source:
-    repoURL: https://github.com/<YOUR_ORG>/<YOUR_REPO>.git
+    repoURL: https://github.com/prasad-moru/GenAiStoreApp.git
     targetRevision: main
-    path: helm-charts/store-front
+    path: helm-charts/store-admin
     helm:
-      releaseName: store-front
+      releaseName: store-admin
       valueFiles:
         - values.yaml
-      values: |
-        image:
-          tag: "1.0.0:initial"
-        
-        datadog:
-          enabled: true
-          env: production
-        
-        analysis:
-          enabled: true
-          provider: datadog
-        
-        istio:
-          gateway:
-            enabled: true
   
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
+    namespace: application
   
   syncPolicy:
     automated:
-      prune: false
+      prune: true
       selfHeal: false
       allowEmpty: false
     syncOptions:
