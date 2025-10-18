@@ -32,11 +32,11 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
-  tls: []
-  # tls:
-  #   - secretName: store-admin-tls
-  #     hosts:
-  #       - admin.yourdomain.com
+
+  tls:
+    - secretName: store-admin-tls
+      hosts:
+        - admin.devopsproduction.com
   alb:
     scheme: internet-facing
     targetType: ip
@@ -70,7 +70,7 @@ istio:
     enabled: true  # ✅ ENABLED for internal routing & telemetry
     hosts:
       - store-admin
-      - store-admin.frontend.svc.cluster.local
+      - store-admin.application.svc.cluster.local
   destinationRule:
     enabled: true  # ✅ ENABLED for circuit breaking & load balancing
 

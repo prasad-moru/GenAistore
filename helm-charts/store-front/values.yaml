@@ -38,7 +38,7 @@ ingress:
   alb:
     scheme: internet-facing
     targetType: ip
-    certificateArn: arn:aws:acm:us-east-1:614520203046:certificate/1701a5c8-591c-4f5d-a3d1-d8773c15dc31  # ✅ Same cert as store-admin
+    certificateArn: arn:aws:acm:us-east-1:614520203046:certificate/3a640dea-c44b-4027-9ff9-abaf1ac11f5a  # ✅ Same cert as store-admin
 
 # Argo Rollouts Strategy - BLUE-GREEN
 strategy:
@@ -68,7 +68,7 @@ istio:
     enabled: true  # ✅ ENABLED for internal routing & telemetry
     hosts:
       - store-front
-      - store-front.frontend.svc.cluster.local
+      - store-front.application.svc.cluster.local
   destinationRule:
     enabled: true  # ✅ ENABLED for circuit breaking & load balancing
 
