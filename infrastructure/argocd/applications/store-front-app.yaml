@@ -1,11 +1,11 @@
-# infrastructure/argocd/applications/store-admin-app.yaml
+# infrastructure/argocd/applications/store-front-app.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: store-admin
+  name: store-front
   namespace: argocd
   annotations:
-    argocd-image-updater.argoproj.io/image-list: storeadmin=614520203046.dkr.ecr.us-east-1.amazonaws.com/store-admin
+    argocd-image-updater.argoproj.io/image-list: storeadmin=614520203046.dkr.ecr.us-east-1.amazonaws.com/store-front
     argocd-image-updater.argoproj.io/order.update-strategy: semver
     argocd-image-updater.argoproj.io/order.allow-tags: regexp:^[0-9]+\.[0-9]+\.[0-9]+-.+$
     argocd-image-updater.argoproj.io/order.ignore-tags: latest, dev, staging
@@ -16,7 +16,7 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    app.kubernetes.io/name: store-admin
+    app.kubernetes.io/name: store-front
     app.kubernetes.io/part-of: store-app
     deployment-strategy: canary
 spec:
@@ -25,9 +25,9 @@ spec:
   source:
     repoURL: https://github.com/prasad-moru/GenAiStoreApp.git
     targetRevision: main
-    path: helm-charts/store-admin
+    path: helm-charts/store-front
     helm:
-      releaseName: store-admin
+      releaseName: store-front
       valueFiles:
         - values.yaml
   
