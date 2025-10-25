@@ -21,7 +21,7 @@ service:
   port: 3000
   targetPort: 3000
 
-# Argo Rollouts Strategy - Same as order-service
+# Argo Rollouts Strategy
 strategy:
   type: canary
   canary:
@@ -73,34 +73,42 @@ istio:
   destinationRule:
     enabled: true
 
-# HPA Configuration
+# HPA Configuration - Fast Scaling (1-6 replicas)
 autoscaling:
   enabled: true
   minReplicas: 1
-  maxReplicas: 10
+  maxReplicas: 6
   targetCPUUtilizationPercentage: 70
   targetMemoryUtilizationPercentage: 80
   behavior:
     scaleDown:
-      stabilizationWindowSeconds: 300
+      stabilizationWindowSeconds: 60    # Wait 1 minute before scaling down
       policies:
         - type: Percent
-          value: 50
-          periodSeconds: 60
+          value: 100                     # Can scale down 100% per period
+          periodSeconds: 15              # Check every 15 seconds
+        - type: Pods
+          value: 2                       # Can remove up to 2 pods at once
+          periodSeconds: 15
+      selectPolicy: Max                  # Use the policy that scales down faster
     scaleUp:
-      stabilizationWindowSeconds: 0
+      stabilizationWindowSeconds: 0      # Scale up immediately
       policies:
         - type: Percent
-          value: 100
-          periodSeconds: 30
+          value: 100                     # Double pods per period
+          periodSeconds: 15              # Check every 15 seconds
+        - type: Pods
+          value: 3                       # Can add up to 3 pods at once
+          periodSeconds: 15
+      selectPolicy: Max  
 
 # Resource limits
 resources:
   requests:
-    cpu: 1m
-    memory: 50Mi
-  limits:
     cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 200m
     memory: 256Mi
 
 # Probes
@@ -130,7 +138,7 @@ probes:
 # Environment variables
 env:
   - name: ORDER_QUEUE_HOSTNAME
-    value: "rabbitmq.platform.svc.cluster.local"  # Changed!
+    value: "rabbitmq.platform.svc.cluster.local"
   - name: ORDER_QUEUE_PORT
     value: "5672"
   - name: ORDER_QUEUE_NAME
@@ -141,8 +149,11 @@ env:
 # Init Container for RabbitMQ readiness
 initContainers:
   - name: wait-for-rabbitmq
-    image: busybox
-    command: ['sh', '-c', 'until nc -zv rabbitmq 5672; do echo waiting for rabbitmq; sleep 2; done;']
+    image: busybox:1.36
+    command: 
+      - 'sh'
+      - '-c'
+      - 'until nc -zv rabbitmq.default.svc.cluster.local 5672; do echo waiting for rabbitmq; sleep 2; done;'
     resources:
       requests:
         cpu: 1m
@@ -151,14 +162,16 @@ initContainers:
         cpu: 100m
         memory: 256Mi
 
-# Vault Configuration - DISABLED for order-service
+# Vault Configuration
 vault:
   enabled: true
   role: "order-service"
   secrets:
     rabbitmq:
       path: "kv/data/order-service"
-      template: |
+      # This template will be rendered by Vault, not Helm
+      # The |- preserves the template syntax for Vault to process
+      template: |-
         {{- with secret "kv/data/order-service" -}}
         export ORDER_QUEUE_USERNAME="{{ .Data.data.rabbitmq_username }}"
         export ORDER_QUEUE_PASSWORD="{{ .Data.data.rabbitmq_password }}"
@@ -169,12 +182,12 @@ datadog:
   enabled: true
   env: production
   service: order-service
-  version: "{{ .Values.image.tag }}"
+  version: "1.0.0-e3a80fd"
   logs:
     enabled: true
   apm:
     enabled: true
-    language: nodejs  # Node.js auto-instrumentation
+    language: nodejs
   profiling:
     enabled: false
 
@@ -200,17 +213,17 @@ analysis:
   enabled: true
   provider: datadog
   datadog:
-    secretName: datadog-secret  # Simplified format like ai-service
+    secretName: datadog-secret
     metrics:
       - name: error-rate
         query: "avg:trace.http.request.errors{service:order-service,env:production}.as_rate()"
-        successCondition: "default(result, 0) < 0.05"  # Added default()
+        successCondition: "default(result, 0) < 0.05"
         failureLimit: 3
         interval: 1m
         count: 5
       - name: p95-latency
         query: "avg:trace.http.request.duration.by.service.95p{service:order-service,env:production}"
-        successCondition: "default(result, 0) < 1000"  # Added default()
+        successCondition: "default(result, 0) < 1000"
         failureLimit: 3
         interval: 1m
         count: 5

@@ -3,30 +3,23 @@ apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: {{ include "makeline-service.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "makeline-service.labels" . | nindent 4 }}
 spec:
   hosts:
-    {{- toYaml .Values.istio.virtualService.hosts | nindent 4 }}
+    - {{ include "makeline-service.fullname" . }}
   http:
   - name: primary
-    match:
-    - headers:
-        x-canary:
-          exact: "true"
     route:
     - destination:
         host: {{ include "makeline-service.fullname" . }}
-        subset: canary
-      weight: 100
-  - name: default
-    route:
-    - destination:
-        host: {{ include "makeline-service.fullname" . }}
-        subset: stable
+        port:
+          number: {{ .Values.service.port }}
       weight: 100
     - destination:
-        host: {{ include "makeline-service.fullname" . }}
-        subset: canary
+        host: {{ include "makeline-service.fullname" . }}-canary
+        port:
+          number: {{ .Values.service.port }}
       weight: 0
 {{- end }}

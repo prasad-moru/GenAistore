@@ -1,26 +1,20 @@
-
 {{- if and .Values.istio.enabled .Values.istio.virtualService.enabled }}
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-  name: {{ include "product-service.fullname" . }}
-  namespace: {{ .Release.Namespace }}
+  name: {{ include "ai-service.fullname" . }}
   labels:
-    {{- include "product-service.labels" . | nindent 4 }}
+    {{- include "ai-service.labels" . | nindent 4 }}
 spec:
   hosts:
-    - {{ include "product-service.fullname" . }}
+    {{- toYaml .Values.istio.virtualService.hosts | nindent 4 }}
   http:
   - name: primary
     route:
     - destination:
-        host: {{ include "product-service.fullname" . }}
-        port:
-          number: {{ .Values.service.port }}
+        host: {{ include "ai-service.fullname" . }}
       weight: 100
     - destination:
-        host: {{ include "product-service.fullname" . }}-canary
-        port:
-          number: {{ .Values.service.port }}
+        host: {{ include "ai-service.fullname" . }}-canary
       weight: 0
 {{- end }}

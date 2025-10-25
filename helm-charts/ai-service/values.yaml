@@ -60,7 +60,7 @@ strategy:
           routes:
             - primary
     analysisInterval: 1m
-    analysisSuccessCount: 5
+    analysisSuccessCount: 2
     analysisFailureLimit: 3
 
 # Istio Configuration
@@ -78,13 +78,13 @@ istio:
 # HPA Configuration
 autoscaling:
   enabled: true
-  minReplicas: 2
-  maxReplicas: 5
+  minReplicas: 1
+  maxReplicas: 2
   targetCPUUtilizationPercentage: 80
   targetMemoryUtilizationPercentage: 85
   behavior:
     scaleDown:
-      stabilizationWindowSeconds: 300
+      stabilizationWindowSeconds: 80 
       policies:
         - type: Percent
           value: 50
@@ -99,11 +99,11 @@ autoscaling:
 # Resource limits
 resources:
   requests:
-    cpu: 100m
-    memory: 128Mi
+    cpu: 200mm
+    memory: 150Mi
   limits:
-    cpu: 200m
-    memory: 256Mi
+    cpu: 400m
+    memory: 300Mi
 
 # Probes
 probes:

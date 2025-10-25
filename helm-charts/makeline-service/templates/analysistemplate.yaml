@@ -3,6 +3,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:
   name: {{ include "makeline-service.fullname" . }}-analysis
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "makeline-service.labels" . | nindent 4 }}
 spec:
@@ -10,21 +11,19 @@ spec:
   {{- if eq .Values.analysis.provider "datadog" }}
   {{- range .Values.analysis.datadog.metrics }}
   - name: {{ .name }}
-    provider:
-      datadog:
-        apiKey:
-          secretKeyRef:
-            name: {{ $.Values.analysis.datadog.apiKeySecret.name }}
-            key: {{ $.Values.analysis.datadog.apiKeySecret.key }}
-        appKey:
-          secretKeyRef:
-            name: {{ $.Values.analysis.datadog.appKeySecret.name }}
-            key: {{ $.Values.analysis.datadog.appKeySecret.key }}
-        query: {{ .query | quote }}
-    successCondition: {{ .successCondition | quote }}
-    failureLimit: {{ .failureLimit }}
     interval: {{ .interval }}
     count: {{ .count }}
+    failureLimit: {{ .failureLimit }}
+    successCondition: {{ .successCondition | quote }}
+    provider:
+      datadog:
+        apiVersion: v2
+        interval: 5m
+        secretRef:
+          name: {{ $.Values.analysis.datadog.secretName }}
+          namespaced: true
+        queries:
+          q: {{ .query | quote }}
   {{- end }}
   {{- end }}
 {{- end }}

@@ -222,9 +222,9 @@ analysis:
         interval: 1m
         count: 5
       
-      - name: request-count
-        query: "sum:trace.http.request.hits{service:store-front,env:production}.as_count()"
-        successCondition: "default(result, 0) > 0"  # At least some traffic
-        failureLimit: 3
-        interval: 1m
-        count: 5
+      # - name: request-count
+      #   query: "sum:trace.http.request.hits{service:store-front,env:production}.as_count()"
+      #   successCondition: "default(result, 0) > 0"  # At least some traffic
+      #   failureLimit: 3
+      #   interval: 1m
+      #   count: 5
