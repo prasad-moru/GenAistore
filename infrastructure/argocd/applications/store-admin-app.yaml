@@ -6,9 +6,9 @@ metadata:
   namespace: argocd
   annotations:
     argocd-image-updater.argoproj.io/image-list: storeadmin=614520203046.dkr.ecr.us-east-1.amazonaws.com/store-admin
-    argocd-image-updater.argoproj.io/order.update-strategy: semver
-    argocd-image-updater.argoproj.io/order.allow-tags: regexp:^[0-9]+\.[0-9]+\.[0-9]+-.+$
-    argocd-image-updater.argoproj.io/order.ignore-tags: latest, dev, staging
+    argocd-image-updater.argoproj.io/admin.update-strategy: semver
+    argocd-image-updater.argoproj.io/admin.allow-tags: regexp:^[0-9]+\.[0-9]+\.[0-9]+-.+$
+    argocd-image-updater.argoproj.io/admin.ignore-tags: latest, dev, staging
     argocd-image-updater.argoproj.io/write-back-method: argocd
     
     notifications.argoproj.io/subscribe.on-sync-succeeded.slack: argocd-notifications
@@ -33,7 +33,7 @@ spec:
   
   destination:
     server: https://kubernetes.default.svc
-    namespace: frontend 
+    namespace: application
   
   syncPolicy:
     automated:

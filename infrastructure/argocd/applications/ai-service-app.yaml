@@ -30,6 +30,10 @@ spec:
       releaseName: ai-service
       valueFiles:
         - values.yaml
+      parameters:
+        - name: serviceAccount.name
+          value: ai-service
+          forceString: true       
   
   destination:
     server: https://kubernetes.default.svc

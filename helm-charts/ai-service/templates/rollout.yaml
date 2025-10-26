@@ -64,20 +64,36 @@ spec:
         args:
           - -c
           - |
-            # Source the Vault secrets
-            . /vault/secrets/openai.env
+            # Wait for secrets file
+            echo "Waiting for Vault secrets..."
+            for i in $(seq 1 60); do 
+              if [ -s /vault/secrets/openai.env ]; then 
+                echo "Secrets file found"
+                break
+              fi
+              sleep 2
+            done
             
-            # Verify key is loaded
+            # Extract values with more precise matching
+            export OPENAI_API_KEY=$(grep '^export OPENAI_API_KEY=' /vault/secrets/openai.env | sed 's/^export OPENAI_API_KEY=//' | tr -d '"' | tr -d '\n' | tr -d '\r' | sed 's/\\n$//')
+            export OPENAI_ORG_ID=$(grep '^export OPENAI_ORG_ID=' /vault/secrets/openai.env | sed 's/^export OPENAI_ORG_ID=//' | tr -d '"' | tr -d '\n' | tr -d '\r')
+            export AZURE_OPENAI_API_KEY=$(grep '^export AZURE_OPENAI_API_KEY=' /vault/secrets/openai.env | sed 's/^export AZURE_OPENAI_API_KEY=//' | tr -d '"' | tr -d '\n' | tr -d '\r')
+            
+            # Verify
             if [ -z "$OPENAI_API_KEY" ]; then
               echo "ERROR: OPENAI_API_KEY not loaded"
+              cat /vault/secrets/openai.env
               exit 1
             fi
             
-            echo "Secrets loaded successfully"
+            echo "Secrets extracted successfully"
+            echo "OPENAI_API_KEY length: ${#OPENAI_API_KEY}"
+            echo "OPENAI_API_KEY first 20 chars: ${OPENAI_API_KEY:0:20}..."
+            echo "OPENAI_API_KEY last 10 chars: ...${OPENAI_API_KEY: -10}"
+            echo "OPENAI_ORG_ID: $OPENAI_ORG_ID"
             
-            # Start the application
-            uvicorn main:app --host 0.0.0.0 --port 5001
-        {{- end }}
+            exec uvicorn main:app --host 0.0.0.0 --port 5001
+        {{- end }}  
         ports:
         - name: http
           containerPort: {{ .Values.service.targetPort }}

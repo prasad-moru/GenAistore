@@ -5,13 +5,11 @@ metadata:
   name: virtual-worker
   namespace: argocd
   annotations:
-    argocd-image-updater.argoproj.io/image-list: virtualworker=prasad890/store-virtual-worker
-    argocd-image-updater.argoproj.io/virtualworker.update-strategy: semver
-    argocd-image-updater.argoproj.io/virtualworker.allow-tags: regexp:^[0-9]+\.[0-9]+\.[0-9]+:.+$
-    argocd-image-updater.argoproj.io/virtualworker.ignore-tags: latest, dev, staging
-    argocd-image-updater.argoproj.io/write-back-method: git
-    argocd-image-updater.argoproj.io/write-back-target: "kustomization:helm-charts/virtual-worker"
-    argocd-image-updater.argoproj.io/git-branch: main
+    argocd-image-updater.argoproj.io/image-list: virtual-worker=614520203046.dkr.ecr.us-east-1.amazonaws.com/store-virtual-worker
+    argocd-image-updater.argoproj.io/order.update-strategy: semver
+    argocd-image-updater.argoproj.io/order.allow-tags: regexp:^[0-9]+\.[0-9]+\.[0-9]+-.+$
+    argocd-image-updater.argoproj.io/order.ignore-tags: latest, dev, staging
+    argocd-image-updater.argoproj.io/write-back-method: argocd
     
     notifications.argoproj.io/subscribe.on-sync-succeeded.slack: argocd-notifications
     notifications.argoproj.io/subscribe.on-sync-failed.slack: argocd-notifications
@@ -25,20 +23,13 @@ spec:
   project: default
   
   source:
-    repoURL: https://github.com/<YOUR_ORG>/<YOUR_REPO>.git
+    repoURL: https://github.com/prasad-moru/GenAiStoreApp.git
     targetRevision: main
     path: helm-charts/virtual-worker
     helm:
       releaseName: virtual-worker
       valueFiles:
         - values.yaml
-      values: |
-        image:
-          tag: "1.0.0:initial"
-        
-        datadog:
-          enabled: true
-          env: production
   
   destination:
     server: https://kubernetes.default.svc

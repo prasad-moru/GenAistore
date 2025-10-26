@@ -2,8 +2,8 @@
 replicaCount: 1
 
 image:
-  repository: prasad890/store-virtual-customer
-  tag: "latest"
+  repository: 614520203046.dkr.ecr.us-east-1.amazonaws.com/store-virtual-customer
+  tag: "1.0.0"
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -37,11 +37,11 @@ autoscaling:
 # Resource limits
 resources:
   requests:
-    cpu: 1m
-    memory: 1Mi
+    cpu: 30m
+    memory: 50Mi
   limits:
-    cpu: 2m
-    memory: 20Mi
+    cpu: 60m
+    memory: 150Mi
 
 # No probes - this is a background job
 probes:

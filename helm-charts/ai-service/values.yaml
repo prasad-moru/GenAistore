@@ -136,7 +136,7 @@ env:
   - name: AZURE_OPENAI_DALLE_DEPLOYMENT_NAME
     value: "dall-e-3"
   - name: AZURE_OPENAI_DALLE_ENDPOINT
-    value: "https://storeapp.openai.azure.com"
+    value: "https://store-app.openai.azure.com"
   - name: AZURE_OPENAI_API_VERSION
     value: "2024-02-15-preview"
   - name: USE_AZURE_AD
@@ -151,10 +151,10 @@ vault:
       path: "kv/data/ai-service"
       template: |
         {{- with secret "kv/data/ai-service" -}}
-        export OPENAI_API_KEY="{{ .Data.data.openai_api_key }}"
-        export OPENAI_ORG_ID="{{ .Data.data.openai_org_id }}"
-        export AZURE_OPENAI_API_KEY="{{ .Data.data.azure_openai_api_key }}"
-        {{- end -}}
+        export OPENAI_API_KEY={{ printf "%q" .Data.data.openai_api_key }}
+        export OPENAI_ORG_ID={{ printf "%q" .Data.data.openai_org_id }}
+        export AZURE_OPENAI_API_KEY={{ printf "%q" .Data.data.azure_openai_api_key }}
+        {{ end }}
 
 # Datadog Configuration
 datadog:
