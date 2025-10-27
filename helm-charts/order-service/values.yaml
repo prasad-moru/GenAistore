@@ -138,7 +138,7 @@ probes:
 # Environment variables
 env:
   - name: ORDER_QUEUE_HOSTNAME
-    value: "rabbitmq.platform.svc.cluster.local"
+    value: "rabbitmq.default.svc.cluster.local"
   - name: ORDER_QUEUE_PORT
     value: "5672"
   - name: ORDER_QUEUE_NAME

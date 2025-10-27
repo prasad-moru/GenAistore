@@ -3,7 +3,7 @@ replicaCount: 1
 
 image:
   repository: 614520203046.dkr.ecr.us-east-1.amazonaws.com/store-admin
-  tag: "1.0.0-d61be22"
+  tag: "1.0.3-293ad83"
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
