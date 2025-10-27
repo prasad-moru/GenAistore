@@ -50,7 +50,7 @@ probes:
 # Environment variables
 env:
   - name: ORDER_SERVICE_URL
-    value: "http://order-service:3000/"
+    value: "http://order-service.application.svc.cluster.local:3000/"
   - name: ORDERS_PER_HOUR
     value: "100"
 
