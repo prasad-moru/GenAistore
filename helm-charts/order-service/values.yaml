@@ -61,6 +61,11 @@ strategy:
     analysisSuccessCount: 5
     analysisFailureLimit: 3
 
+# Add this section to your values.yaml (around line 229, replace the empty podAnnotations)
+podAnnotations:
+  traffic.sidecar.istio.io/excludeOutboundPorts: "8200,8201"
+  proxy.istio.io/config: '{ "holdApplicationUntilProxyStarts": true }'
+
 # Istio Configuration
 istio:
   enabled: true
