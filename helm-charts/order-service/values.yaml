@@ -210,7 +210,7 @@ nodeSelector:
 
 tolerations: []
 affinity: {}
-podAnnotations: {}
+
 podLabels: {}
 
 # Analysis Template Configuration

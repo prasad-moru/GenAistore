@@ -92,7 +92,7 @@ spec:
             echo "OPENAI_API_KEY last 10 chars: ...${OPENAI_API_KEY: -10}"
             echo "OPENAI_ORG_ID: $OPENAI_ORG_ID"
             
-             exec ddtrace-run uvicorn main:app --host 0.0.0.0 --port 5001
+            exec uvicorn main:app --host 0.0.0.0 --port 5001
         {{- end }}  
         ports:
         - name: http

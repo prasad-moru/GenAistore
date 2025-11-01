@@ -50,7 +50,7 @@ probes:
 # Environment variables
 env:
   - name: MAKELINE_SERVICE_URL
-    value: "http://makeline-service:3001"
+    value: "http://makeline-service.application.svc.cluster.local:3001"
   - name: ORDERS_PER_HOUR
     value: "100"
 
