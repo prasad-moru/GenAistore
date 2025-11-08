@@ -1,1 +1,2 @@
 # GenAistore
+#storage configuration

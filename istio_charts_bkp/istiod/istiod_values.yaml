@@ -1,0 +1,59 @@
+# Working Istiod values.yaml
+# This configuration works around the hardcoded readiness probe issue
+
+# Pilot/Istiod configuration
+pilot:
+  # Resources with proper limits
+  resources:
+    requests:
+      cpu: 500m
+      memory: 2048Mi
+    limits:
+      cpu: 2000m
+      memory: 4096Mi
+  k8s:
+    readinessProbe:
+      httpGet:
+        path: /healthz/ready
+        port: 15021
+      initialDelaySeconds: 10
+      periodSeconds: 5
+      timeoutSeconds: 5
+      successThreshold: 1
+      failureThreshold: 10  
+  # Disable autoscaling for predictable behavior
+  autoscaleEnabled: false
+  replicaCount: 1
+  
+  # Environment variables
+  env:
+    PILOT_ENABLE_STATUS: "true"
+    LOG_LEVEL: "default:info"
+
+# Global configuration
+global:
+  hub: docker.io/istio
+  tag: 1.27.1
+  
+  logging:
+    level: "default:info"
+  
+  # This is important - ensure pilot cert provider is set
+  pilotCertProvider: istiod
+
+# Enable ConfigMap
+configMap: true
+
+# Webhook configuration
+sidecarInjectorWebhook:
+  enableNamespacesByDefault: false
+  rewriteAppHTTPProbe: true
+  reinvocationPolicy: Never
+
+# PodDisruptionBudget
+pdb:
+  minAvailable: 0
+
+# Rolling update strategy - make it more lenient
+rollingMaxSurge: 100%
+rollingMaxUnavailable: 25%
