@@ -15,7 +15,7 @@ env:
   AWS_REGION: us-east-1
   ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
   SONAR_HOST_URL: https://sonarcloud.io
-  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  SONAR_TOKEN_ORD: ${{ secrets.SONAR_TOKEN_ORD }}
   SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
   NODE_VERSION: 'v18.20.8'
 
@@ -110,7 +110,7 @@ jobs:
             -Dsonar.test.inclusions=**/*.spec.js,**/*.test.js,**/*.spec.ts,**/*.test.ts \
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
             -Dsonar.host.url=${{ env.SONAR_HOST_URL }} \
-            -Dsonar.token=${{ env.SONAR_TOKEN }} \
+            -Dsonar.token=${{ env.SONAR_TOKEN_ORD }} \
             -Dsonar.projectVersion=${{ steps.tag.outputs.version }}
           
           echo "✅ SonarCloud analysis completed" >> $GITHUB_STEP_SUMMARY
