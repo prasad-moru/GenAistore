@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced DevSecOps Courses</title>
+    <style>
+        /* Professional Course Cards Section */
+        .courses-hero-section {
+            background: linear-gradient(135deg, #1a1f3a 0%, #2d3561 50%, #1a1f3a 100%);
+            padding: 80px 20px 100px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Animated background elements */
+        .courses-hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(66, 133, 244, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(52, 168, 83, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(234, 67, 53, 0.05) 0%, transparent 50%);
+            animation: pulse 15s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        .courses-hero-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            z-index: 1;
+        }
+        
+        .courses-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .courses-header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .courses-tag {
+            display: inline-block;
+            padding: 10px 24px;
+            background: rgba(66, 133, 244, 0.15);
+            color: #4285f4;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border: 2px solid rgba(66, 133, 244, 0.3);
+        }
+        
+        .courses-main-title {
+            font-size: 52px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            letter-spacing: -1px;
+        }
+        
+        .courses-subtitle {
+            font-size: 20px;
+            color: #b8c5d6;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        /* Course Cards Grid */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(550px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+            padding: 0 20px;
+        }
+        
+        .course-card {
+            background: #ffffff;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            animation: fadeInUp 0.8s ease-out;
+            animation-fill-mode: both;
+        }
+        
+        .course-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+        
+        .course-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .course-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+        }
+        
+        .course-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #4285f4 0%, #34a853 50%, #fbbc05 100%);
+        }
+        
+        .course-image-container {
+            position: relative;
+            height: 380px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        
+        .course-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .course-card:hover .course-image {
+            transform: scale(1.08);
+        }
+        
+        .course-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 8px 20px rgba(238, 90, 111, 0.4);
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        .course-content {
+            padding: 35px;
+        }
+        
+        .course-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1f3a;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+        
+        .course-description {
+            font-size: 16px;
+            color: #5f6368;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+        
+        .course-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        
+        .course-feature {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: #34495e;
+            padding: 10px 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 3px solid #4285f4;
+        }
+        
+        .course-feature::before {
+            content: '✓';
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);
+            color: white;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: 700;
+            font-size: 12px;
+        }
+        
+        .course-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 25px;
+            border-top: 2px solid #f0f0f0;
+        }
+        
+        .course-price-container {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .course-price-label {
+            font-size: 13px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        
+        .course-price {
+            font-size: 36px;
+            font-weight: 800;
+            color: #1a1f3a;
+            display: flex;
+            align-items: center;
+        }
+        
+        .currency-symbol {
+            font-size: 24px;
+            margin-right: 3px;
+            color: #4285f4;
+        }
+        
+        .enroll-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 40px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+            font-size: 17px;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(238, 90, 111, 0.3);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        .enroll-button:hover {
+            background: linear-gradient(135deg, #ee5a6f 0%, #ff6b6b 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(238, 90, 111, 0.4);
+        }
+        
+        .enroll-button::after {
+            content: '→';
+            font-size: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .enroll-button:hover::after {
+            transform: translateX(5px);
+        }
+        
+        /* Tech Stack Pills */
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 25px;
+        }
+        
+        .tech-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Stats Section */
+        .course-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 12px;
+        }
+        
+        .stat-number {
+            font-size: 24px;
+            font-weight: 800;
+            color: #1a1f3a;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #5f6368;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .courses-grid {
+                grid-template-columns: 1fr;
+                max-width: 700px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .courses-main-title {
+                font-size: 36px;
+            }
+            
+            .courses-subtitle {
+                font-size: 16px;
+            }
+            
+            .course-image-container {
+                height: 280px;
+            }
+            
+            .course-title {
+                font-size: 24px;
+            }
+            
+            .course-features {
+                grid-template-columns: 1fr;
+            }
+            
+            .course-footer {
+                flex-direction: column;
+                gap: 20px;
+                align-items: stretch;
+            }
+            
+            .enroll-button {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .course-stats {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .courses-grid {
+                grid-template-columns: 1fr;
+                padding: 0 10px;
+            }
+            
+            .course-content {
+                padding: 25px 20px;
+            }
+            
+            .courses-main-title {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="courses-hero-section">
+        <div class="courses-container">
+            <div class="courses-header">
+                <span class="courses-tag">🚀 Advanced Training</span>
+                <h1 class="courses-main-title">Production-Grade DevSecOps Mastery</h1>
+                <p class="courses-subtitle">
+                    Industry-leading courses designed for professionals who demand excellence. 
+                    Build enterprise-scale systems with battle-tested tools and methodologies.
+                </p>
+            </div>
+            
+            <div class="courses-grid">
+                <!-- Course Card 1: GenAI DevSecOps -->
+                <div class="course-card">
+                    <div class="course-image-container">
+                        <!-- Replace with your actual course architecture image -->
+                        <img src="https://via.placeholder.com/700x400/667eea/ffffff?text=GenAI+DevSecOps+Architecture" 
+                             alt="GenAI DevSecOps Project" 
+                             class="course-image">
+                        <span class="course-badge">🔥 Hot</span>
+                    </div>
+                    
+                    <div class="course-content">
+                        <h2 class="course-title">GenAI DevSecOps Project Advanced</h2>
+                        
+                        <p class="course-description">
+                            Master advanced security integration in cutting-edge GenAI applications. 
+                            Deploy production-ready AI services with complete DevSecOps automation, 
+                            from security scanning to canary deployments.
+                        </p>
+                        
+                        <div class="tech-stack">
+                            <span class="tech-pill">🤖 GenAI</span>
+                            <span class="tech-pill">🔐 Vault</span>
+                            <span class="tech-pill">📊 DataDog APM</span>
+                            <span class="tech-pill">🚀 ArgoCD</span>
+                            <span class="tech-pill">☸️ Kubernetes</span>
+                            <span class="tech-pill">🛡️ OWASP</span>
+                        </div>
+                        
+                        <div class="course-stats">
+                            <div class="stat-item">
+                                <span class="stat-number">50+</span>
+                                <span class="stat-label">Hours</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">15+</span>
+                                <span class="stat-label">Tools</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">100%</span>
+                                <span class="stat-label">Hands-On</span>
+                            </div>
+                        </div>
+                        
+                        <div class="course-features">
+                            <div class="course-feature">CI with GitHub Actions</div>
+                            <div class="course-feature">GitOps with ArgoCD</div>
+                            <div class="course-feature">Canary Deployments</div>
+                            <div class="course-feature">Vault Secrets</div>
+                            <div class="course-feature">EFK Logging</div>
+                            <div class="course-feature">Slack Alerts</div>
+                        </div>
+                        
+                        <div class="course-footer">
+                            <div class="course-price-container">
+                                <span class="course-price-label">Enroll Now</span>
+                                <div class="course-price">
+                                    <span class="currency-symbol">₹</span>4,500
+                                </div>
+                            </div>
+                            <a href="#enroll-genai" class="enroll-button">
+                                Enroll Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Course Card 2: Advanced DevSecOps -->
+                <div class="course-card">
+                    <div class="course-image-container">
+                        <!-- Replace with your actual course architecture image -->
+                        <img src="https://via.placeholder.com/700x400/764ba2/ffffff?text=Advanced+DevSecOps+Architecture" 
+                             alt="Advanced DevSecOps Project" 
+                             class="course-image">
+                        <span class="course-badge">⭐ Bestseller</span>
+                    </div>
+                    
+                    <div class="course-content">
+                        <h2 class="course-title">Advanced DevSecOps Project Course</h2>
+                        
+                        <p class="course-description">
+                            Complete production infrastructure with enterprise-grade security, monitoring, 
+                            and automated deployments. Master the entire DevSecOps pipeline from code 
+                            commit to production deployment on AWS EKS.
+                        </p>
+                        
+                        <div class="tech-stack">
+                            <span class="tech-pill">☸️ EKS</span>
+                            <span class="tech-pill">🔄 Istio</span>
+                            <span class="tech-pill">📈 Prometheus</span>
+                            <span class="tech-pill">🎯 Helm</span>
+                            <span class="tech-pill">🔍 Trivy</span>
+                            <span class="tech-pill">📊 Grafana</span>
+                        </div>
+                        
+                        <div class="course-stats">
+                            <div class="stat-item">
+                                <span class="stat-number">60+</span>
+                                <span class="stat-label">Hours</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">20+</span>
+                                <span class="stat-label">Tools</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">AWS</span>
+                                <span class="stat-label">EKS</span>
+                            </div>
+                        </div>
+                        
+                        <div class="course-features">
+                            <div class="course-feature">SAST with SonarQube</div>
+                            <div class="course-feature">Service Mesh</div>
+                            <div class="course-feature">RUM Monitoring</div>
+                            <div class="course-feature">Image Updater</div>
+                            <div class="course-feature">Network Tracing</div>
+                            <div class="course-feature">Argo Rollouts</div>
+                        </div>
+                        
+                        <div class="course-footer">
+                            <div class="course-price-container">
+                                <span class="course-price-label">Enroll Now</span>
+                                <div class="course-price">
+                                    <span class="currency-symbol">₹</span>5,000
+                                </div>
+                            </div>
+                            <a href="#enroll-advanced" class="enroll-button">
+                                Enroll Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
