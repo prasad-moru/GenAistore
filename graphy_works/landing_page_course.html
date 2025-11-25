@@ -1,112 +1,92 @@
+<!-- FIXED HERO SECTION - Mobile Responsive + Proper Image Size -->
+
 <div id="hero-section" data-cat="113" class="is-section is-section-100 is-box">
 	<div data-coursid="6922ed51da1749102ade104a" class="courselandingpage is-boxes">
 		<div data-coursid="6922ce5ad4b34838c2cb8ca5" class="courselandingpage is-box-centered">
-			<div data-coursid="6922ed51da1749102ade104a" class="courselandingpage is-container container" style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%); padding: 80px 20px; position: relative; overflow: hidden; border-radius: 30px; margin: 20px auto; max-width: 1400px; font-family: 'Roboto', sans-serif;">
+			<div data-coursid="6922ed51da1749102ade104a" class="courselandingpage is-container container hero-container">
 				
 				<!-- Decorative Elements -->
-				<div style="position: absolute; top: 20%; left: 10%; width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 50%; filter: blur(40px);"></div>
-				<div style="position: absolute; bottom: 30%; right: 15%; width: 150px; height: 150px; background: rgba(255,255,255,0.1); border-radius: 50%; filter: blur(50px);"></div>
+				<div class="hero-decoration hero-decoration-1"></div>
+				<div class="hero-decoration hero-decoration-2"></div>
 				
-				<!-- TWO COLUMN LAYOUT: Image Left + Logos Right -->
-				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; max-width: 1200px; margin: 0 auto; position: relative; z-index: 2;">
+				<!-- TWO COLUMN LAYOUT -->
+				<div class="hero-grid">
 					
-					<!-- LEFT SIDE: Main Image -->
-					<div style="text-align: center;">
-						<!-- REPLACE THIS URL WITH YOUR GOOGLE DRIVE IMAGE LINK -->
-						<img src="https://drive.google.com/uc?export=view&id=1Y1E2HAXscRHES0lBjU39S1lz5FwdvGpA" 
-						     alt="DevSecOps Project" 
-						     style="width: 100%; max-width: 500px; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); transition: transform 0.3s ease;">
-						
-						<!-- Badge Above Image -->
-						<div style="display: inline-block; background: rgba(255,255,255,0.2); padding: 8px 20px; border-radius: 50px; margin-bottom: 20px; backdrop-filter: blur(10px);">
-							<span style="color: #fff; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">🚀 Production-Grade DevSecOps</span>
+					<!-- LEFT: Main Image -->
+					<div class="hero-left">
+						<div class="hero-badge">
+							<span>🚀 Production-Grade DevSecOps</span>
 						</div>
 						
-						<!-- Trust Badges Below Image -->
-						<div style="display: flex; gap: 20px; justify-content: center; margin-top: 30px; flex-wrap: wrap;">
-							<div style="color: rgba(255,255,255,0.95); font-size: 14px; font-weight: 600;">
-								⭐ <span style="color: #fbbf24;">4.9/5</span> Rating
+						<!-- YOUR GITHUB IMAGE -->
+						<img src="https://cdn.jsdelivr.net/gh/prasad-moru/GenAistore/landing_page_image.png" 
+						     alt="DevSecOps Project" 
+						     class="hero-main-image">
+						
+						<div class="hero-stats">
+							<div class="stat-item">
+								⭐ <span class="stat-highlight">4.9/5</span> Rating
 							</div>
-							<div style="color: rgba(255,255,255,0.95); font-size: 14px; font-weight: 600;">
-								👥 <span style="color: #fbbf24;">500+</span> Students
+							<div class="stat-item">
+								👥 <span class="stat-highlight">500+</span> Students
 							</div>
 						</div>
 					</div>
 					
-					<!-- RIGHT SIDE: Content + Tool Logos -->
-					<div style="text-align: left;">
-						<h1 style="font-size: 56px; font-weight: 900; color: #ffffff; margin: 0 0 20px; line-height: 1.2; text-shadow: 0 4px 20px rgba(0,0,0,0.2);">
-							Master Modern<br><span style="background: linear-gradient(90deg, #fbbf24, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">DevSecOps</span>
+					<!-- RIGHT: Content + Tool Logos -->
+					<div class="hero-right">
+						<h1 class="hero-title">
+							Master Modern<br><span class="hero-title-gradient">DevSecOps</span>
 						</h1>
 						
-						<p style="font-size: 20px; color: rgba(255,255,255,0.95); margin: 0 0 30px; line-height: 1.6; font-weight: 400;">
+						<p class="hero-subtitle">
 							Build Enterprise-Level DevSecOps with Advanced Best Practices
 						</p>
 						
 						<!-- Tool Logos Grid -->
-						<div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; backdrop-filter: blur(10px); margin-bottom: 30px;">
-							<p style="color: rgba(255,255,255,0.9); font-size: 14px; font-weight: 600; margin: 0 0 15px; text-transform: uppercase; letter-spacing: 1px;">Technologies You'll Master</p>
+						<div class="tech-container">
+							<p class="tech-label">TECHNOLOGIES YOU'LL MASTER</p>
 							
-							<div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; align-items: center; justify-items: center;">
-								
-								<!-- Docker -->
+							<div class="tech-grid">
 								<div class="tool-logo">
-									<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker" style="width: 45px; height: 45px; filter: brightness(0) invert(1);">
+									<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker">
 								</div>
-								
-								<!-- Kubernetes -->
 								<div class="tool-logo">
-									<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg" alt="Kubernetes" style="width: 45px; height: 45px; filter: brightness(0) invert(1);">
+									<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg" alt="Kubernetes">
 								</div>
-								
-								<!-- Terraform -->
 								<div class="tool-logo">
-									<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/terraform/terraform-original.svg" alt="Terraform" style="width: 45px; height: 45px; filter: brightness(0) invert(1);">
+									<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/terraform/terraform-original.svg" alt="Terraform">
 								</div>
-								
-								<!-- AWS -->
 								<div class="tool-logo">
-									<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="AWS" style="width: 45px; height: 45px; filter: brightness(0) invert(1);">
+									<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="AWS">
 								</div>
-								
-								<!-- GitHub Actions -->
 								<div class="tool-logo">
-									<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" style="width: 45px; height: 45px; filter: brightness(0) invert(1);">
+									<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub">
 								</div>
-								
-								<!-- Grafana -->
 								<div class="tool-logo">
-									<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/grafana/grafana-original.svg" alt="Grafana" style="width: 45px; height: 45px; filter: brightness(0) invert(1);">
+									<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/grafana/grafana-original.svg" alt="Grafana">
 								</div>
-								
-								<!-- Prometheus -->
 								<div class="tool-logo">
-									<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prometheus/prometheus-original.svg" alt="Prometheus" style="width: 45px; height: 45px; filter: brightness(0) invert(1);">
+									<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prometheus/prometheus-original.svg" alt="Prometheus">
 								</div>
-								
-								<!-- ArgoCD -->
 								<div class="tool-logo">
-									<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/argocd/argocd-original.svg" alt="ArgoCD" style="width: 45px; height: 45px; filter: brightness(0) invert(1);">
+									<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/argocd/argocd-original.svg" alt="ArgoCD">
 								</div>
-								
-								<!-- HashiCorp Vault (using generic icon) -->
-								<div class="tool-logo" style="background: rgba(255,255,255,0.2); border-radius: 8px; padding: 8px; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center;">
-									<span style="color: white; font-size: 20px; font-weight: 900;">🔐</span>
+								<div class="tool-logo">
+									<img src="https://cdn.simpleicons.org/istio/white" alt="Istio">
 								</div>
-								
-								<!-- DataDog (using generic icon) -->
-								<div class="tool-logo" style="background: rgba(255,255,255,0.2); border-radius: 8px; padding: 8px; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center;">
-									<span style="color: white; font-size: 20px; font-weight: 900;">📊</span>
+								<div class="tool-logo tool-logo-emoji">
+									<span>📊</span>
 								</div>
 							</div>
 						</div>
 						
 						<!-- CTA Buttons -->
-						<div style="display: flex; gap: 15px; flex-wrap: wrap;">
-							<a href="/single-checkout/6922ed51da1749102ade104a?pid=p1" style="display: inline-flex; align-items: center; background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #000; padding: 16px 35px; font-size: 18px; font-weight: 700; text-decoration: none; border-radius: 12px; box-shadow: 0 8px 30px rgba(251, 191, 36, 0.4); transition: all 0.3s ease; border: none;">
+						<div class="hero-buttons">
+							<a href="/single-checkout/6922ed51da1749102ade104a?pid=p1" class="btn-primary">
 								🎓 Enroll Now
 							</a>
-							<a href="#highlights" style="display: inline-flex; align-items: center; background: rgba(255,255,255,0.15); color: #fff; padding: 16px 35px; font-size: 18px; font-weight: 700; text-decoration: none; border-radius: 12px; backdrop-filter: blur(10px); border: 2px solid rgba(255,255,255,0.3); transition: all 0.3s ease;">
+							<a href="#highlights" class="btn-secondary">
 								📋 What's Inside
 							</a>
 						</div>
@@ -118,49 +98,462 @@
 	</div>
 </div>
 
-<!-- ADD THIS CSS FOR TOOL LOGOS -->
+<!-- STYLES FOR HERO SECTION -->
 <style>
+/* Import Roboto Font */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700;800;900&display=swap');
+
+/* Hero Container */
+.hero-container {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+    padding: 80px 20px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 30px;
+    margin: 20px auto;
+    max-width: 1400px;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Decorative Elements */
+.hero-decoration {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+    background: rgba(255,255,255,0.1);
+}
+
+.hero-decoration-1 {
+    top: 20%;
+    left: 10%;
+    width: 100px;
+    height: 100px;
+}
+
+.hero-decoration-2 {
+    bottom: 30%;
+    right: 15%;
+    width: 150px;
+    height: 150px;
+}
+
+/* Grid Layout */
+.hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+/* Left Side */
+.hero-left {
+    text-align: center;
+}
+
+.hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    padding: 8px 20px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.hero-badge span {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Main Image - FIXED SIZE */
+.hero-main-image {
+    width: 100%;
+    max-width: 380px; /* REDUCED from 500px */
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease;
+    display: block;
+    margin: 0 auto;
+}
+
+.hero-main-image:hover {
+    transform: scale(1.02);
+}
+
+/* Stats */
+.hero-stats {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 25px;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    color: rgba(255,255,255,0.95);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.stat-highlight {
+    color: #fbbf24;
+}
+
+/* Right Side */
+.hero-right {
+    text-align: left;
+}
+
+.hero-title {
+    font-size: 52px; /* REDUCED from 56px */
+    font-weight: 900;
+    color: #ffffff;
+    margin: 0 0 20px;
+    line-height: 1.2;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+.hero-title-gradient {
+    background: linear-gradient(90deg, #fbbf24, #f59e0b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-subtitle {
+    font-size: 19px; /* REDUCED from 20px */
+    color: rgba(255,255,255,0.95);
+    margin: 0 0 30px;
+    line-height: 1.6;
+}
+
+/* Tech Container */
+.tech-container {
+    background: rgba(255,255,255,0.1);
+    padding: 20px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    margin-bottom: 30px;
+}
+
+.tech-label {
+    color: rgba(255,255,255,0.9);
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0 0 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Tech Grid */
+.tech-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    align-items: center;
+    justify-items: center;
+}
+
 .tool-logo {
-    transition: transform 0.3s ease, filter 0.3s ease;
+    transition: transform 0.3s ease;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tool-logo img {
+    width: 42px; /* REDUCED from 45px */
+    height: 42px;
+    filter: brightness(0) invert(1);
 }
 
 .tool-logo:hover {
     transform: scale(1.2) translateY(-5px);
 }
 
-.tool-logo img:hover {
-    filter: brightness(0) invert(1) drop-shadow(0 0 10px rgba(251, 191, 36, 0.8)) !important;
+.tool-logo:hover img {
+    filter: brightness(0) invert(1) drop-shadow(0 0 10px rgba(251, 191, 36, 0.8));
 }
 
-/* Responsive for Hero Section */
-@media (max-width: 968px) {
-    #hero-section > div > div > div > div > div {
-        grid-template-columns: 1fr !important;
-        gap: 40px !important;
-    }
-    
-    #hero-section h1 {
-        font-size: 42px !important;
-    }
-    
-    #hero-section img {
-        max-width: 100% !important;
-    }
+.tool-logo-emoji {
+    background: rgba(255,255,255,0.2);
+    border-radius: 8px;
+    padding: 8px;
+    width: 42px;
+    height: 42px;
 }
 
-@media (max-width: 480px) {
-    #hero-section h1 {
-        font-size: 32px !important;
+.tool-logo-emoji span {
+    color: white;
+    font-size: 22px;
+}
+
+/* Buttons */
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    color: #000;
+    padding: 16px 35px;
+    font-size: 18px;
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(251, 191, 36, 0.4);
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(251, 191, 36, 0.6);
+}
+
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    padding: 16px 35px;
+    font-size: 18px;
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,0.3);
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background: rgba(255,255,255,0.25);
+    transform: translateY(-2px);
+}
+
+/* ========================================
+   RESPONSIVE - TABLET (768px - 1024px)
+======================================== */
+@media (max-width: 1024px) {
+    .hero-grid {
+        gap: 40px;
     }
     
-    #hero-section p {
-        font-size: 16px !important;
+    .hero-title {
+        font-size: 44px;
+    }
+    
+    .hero-main-image {
+        max-width: 340px;
+    }
+    
+    .tech-grid {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 12px;
     }
     
     .tool-logo img {
-        width: 35px !important;
-        height: 35px !important;
+        width: 38px;
+        height: 38px;
+    }
+}
+
+/* ========================================
+   RESPONSIVE - MOBILE (max 768px)
+======================================== */
+@media (max-width: 768px) {
+    .hero-container {
+        padding: 60px 15px;
+        border-radius: 20px;
+        margin: 10px auto;
+    }
+    
+    /* STACK VERTICALLY ON MOBILE */
+    .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    /* Left Side Mobile */
+    .hero-left {
+        order: 2; /* Image AFTER content on mobile */
+    }
+    
+    .hero-main-image {
+        max-width: 280px; /* Smaller on mobile */
+        border-radius: 15px;
+    }
+    
+    .hero-badge {
+        padding: 6px 16px;
+    }
+    
+    .hero-badge span {
+        font-size: 12px;
+    }
+    
+    .hero-stats {
+        gap: 15px;
+        margin-top: 20px;
+    }
+    
+    .stat-item {
+        font-size: 13px;
+    }
+    
+    /* Right Side Mobile */
+    .hero-right {
+        text-align: center; /* Center text on mobile */
+        order: 1; /* Content BEFORE image on mobile */
+    }
+    
+    .hero-title {
+        font-size: 36px;
+    }
+    
+    .hero-subtitle {
+        font-size: 17px;
+        margin-bottom: 25px;
+    }
+    
+    /* Tech Grid Mobile - 4 columns */
+    .tech-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+    }
+    
+    .tool-logo img {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .tool-logo-emoji {
+        width: 35px;
+        height: 35px;
+        padding: 6px;
+    }
+    
+    .tool-logo-emoji span {
+        font-size: 20px;
+    }
+    
+    /* Buttons Mobile */
+    .hero-buttons {
+        justify-content: center;
+        gap: 12px;
+    }
+    
+    .btn-primary,
+    .btn-secondary {
+        padding: 14px 28px;
+        font-size: 16px;
+    }
+}
+
+/* ========================================
+   RESPONSIVE - SMALL MOBILE (max 480px)
+======================================== */
+@media (max-width: 480px) {
+    .hero-container {
+        padding: 50px 12px;
+        border-radius: 15px;
+    }
+    
+    .hero-grid {
+        gap: 25px;
+    }
+    
+    .hero-main-image {
+        max-width: 240px; /* Even smaller on small phones */
+    }
+    
+    .hero-title {
+        font-size: 28px;
+        margin-bottom: 15px;
+    }
+    
+    .hero-subtitle {
+        font-size: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .tech-container {
+        padding: 15px;
+    }
+    
+    .tech-label {
+        font-size: 11px;
+        margin-bottom: 12px;
+    }
+    
+    /* Tech Grid Small Mobile - 3 columns */
+    .tech-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+    
+    .tool-logo img {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .tool-logo-emoji {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .tool-logo-emoji span {
+        font-size: 18px;
+    }
+    
+    .btn-primary,
+    .btn-secondary {
+        padding: 12px 24px;
+        font-size: 15px;
+        width: 100%; /* Full width on small mobile */
+        justify-content: center;
+    }
+    
+    .hero-buttons {
+        width: 100%;
+    }
+}
+
+/* ========================================
+   RESPONSIVE - TINY MOBILE (max 360px)
+======================================== */
+@media (max-width: 360px) {
+    .hero-main-image {
+        max-width: 200px;
+    }
+    
+    .hero-title {
+        font-size: 24px;
+    }
+    
+    .hero-subtitle {
+        font-size: 14px;
+    }
+    
+    .tech-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+    
+    .tool-logo img {
+        width: 28px;
+        height: 28px;
     }
 }
 </style>
