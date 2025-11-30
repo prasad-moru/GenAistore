@@ -218,39 +218,40 @@
 			
 			.feature-text {
 				font-size: 14px;
-				color: #88e80b;
+				color: #5f6368;
 				line-height: 1.5;
 			}
 			
 			.cta-button {
 					align-items: center;
 					display: inline-flex;
-					padding: 14px 32px;
+					padding: 10px 24px;
 					gap: 10px;
-					background-color: #2dbaae; /* Blue background */
-					color: #985c08; /* Bright yellow */
+					background-color: #04d1c0; /* Blue background */
+					color: #f10a0a; /* Bright yellow */
 					border-radius: 20px;
-					font-weight: 900; /* Maximum boldness */
-					font-size: 20px; /* Increased font size */
-					text-decoration: none;
+					font-weight: 600; /* Maximum boldness */
+					font-size: 18px; /* Increased font size */
+					text-decoration-inset: none;
+                    text-decoration: none;
 					transition: all 0.3s ease;
-					box-shadow: 0 10px 25px rgba(34, 2, 245, 0.3);
+					box-shadow: 0 10px 25px rgba(167, 3, 3, 0.3);
 					margin-top: 20px;
 					letter-spacing: 0.8px; /* Increased letter spacing */
 					text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Strong text shadow for contrast */
 				}
 				
 			
-			.cta-button:hover {
-				background-color: #df6075;
-				transform: translateY(-3px);
-				box-shadow: 0 8px 25px rgba(66, 133, 244, 0.4);
-			}
+            .cta-button:hover {
+                text-decoration: none !important; /* Ensure no underline on hover */
+                transform: translateY(-3px);
+                box-shadow: 0 15px 35px rgba(66, 133, 244, 0.4);
+            }
 			
 			.cta-button-icon {
-				font-size: 29px;
+				font-size: 28px;
+                font-weight: 600;
 			}
-			
 			/* Right side visual elements */
 			.visual-container {
 				position: relative;
@@ -569,7 +570,7 @@
 								</div>
 							</div>
 							
-							<a href="/s/store" class="cta-button">
+							<a href="/s/store" class="cta-button" style="text-decoration: none !important; color: #a60977 !important;">
 								Explore Courses
 								<span class="cta-button-icon">→</span>
 							</a>
@@ -704,7 +705,7 @@
 					</div>
 					</div>
 				<div class="row clearfix">
-				<div class="is-overlay-content sp-content spCourseContainer" data-type="spcoursecard-9" data-module="course1" data-module-desc="Course List" data-dialog-width="300px" data-dialog-height="235px" data-html="Sxgiumr" data-settings="%5B%7B%20%22category%22%3A%20%22%22%7D%5D"><div id="BHr446E"></div><script>loadSPCourses("", "BHr446E")</script></div>
+				<div class="is-overlay-content sp-content spCourseContainer" data-type="spcoursecard-9" data-module="course1" data-module-desc="Course List" data-dialog-width="300px" data-dialog-height="235px" data-html="pZ1FgQ0" data-settings="%5B%7B%20%22category%22%3A%20%22%22%7D%5D">Sxgiumr</div>
 				</div>
 				<div class="row clearfix"><div class="column full"><div class="spacer height-80" id="1612522642301"></div></div></div>
 				<div class="column full text-center">
@@ -716,367 +717,6 @@
 
 <div id="1747500248678d" data-cat="4" class="is-section is-section-100 is-box is-bg-grey custom-design-box">
 	<div class="is-overlay">
-		<div class="is-overlay-content" data-module="code" data-module-desc="Custom HTML or Javascript " data-html="ui6HVpa"><!-- Combined code with your existing structure -->
-
-	
-	<div class="is-boxes">
-		<div class="is-box-centered is-content-bottom is-opacity-90">
-			<div class="is-container is-content-1400 is-content-left container">
-				<div class="row clearfix">
-					<div class="column full">
-						<style>
-						/* Background Styling to match screenshot */
-						body {
-							background-color: #f0f4f8;
-							background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23d1d8e0' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M10 0v20h10V0H10zM0 0v10h10V0H0z'/%3E%3C/g%3E%3C/svg%3E");
-							background-size: 20px 20px;
-						}
-						
-						/* DevOps Tools Grid Styling */
-						.tools-grid {
-							display: grid;
-							grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-							gap: 25px;
-							margin-bottom: 40px;
-						}
-						
-						.tool-tile {
-							background-color: white;
-							border-radius: 12px;
-							overflow: hidden;
-							box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-							transition: all 0.3s ease;
-							position: relative;
-							display: flex;
-							flex-direction: column;
-							align-items: center;
-							padding: 30px 20px;
-							text-align: center;
-							cursor: pointer;
-							border-top: 4px solid transparent;
-						}
-						
-						.tool-tile:hover {
-							transform: translateY(-10px);
-							box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-						}
-						
-						.tool-tile::before {
-							content: '';
-							position: absolute;
-							top: 0;
-							left: 0;
-							width: 100%;
-							height: 4px;
-							z-index: 1;
-						}
-						
-						.tool-tile:nth-child(5n+1)::before {
-							background: linear-gradient(90deg, #4285f4, #34a853);
-						}
-						
-						.tool-tile:nth-child(5n+2)::before {
-							background: linear-gradient(90deg, #ea4335, #fbbc05);
-						}
-						
-						.tool-tile:nth-child(5n+3)::before {
-							background: linear-gradient(90deg, #34a853, #4285f4);
-						}
-						
-						.tool-tile:nth-child(5n+4)::before {
-							background: linear-gradient(90deg, #fbbc05, #ea4335);
-						}
-						
-						.tool-tile:nth-child(5n+5)::before {
-							background: linear-gradient(90deg, #ea4335, #34a853);
-						}
-						
-						.tool-icon {
-							width: 50px; /* Reduced from 70px */
-							height: 50px; /* Reduced from 70px */
-							margin-bottom: 20px;
-							display: flex;
-							align-items: center;
-							justify-content: center;
-						}
-						
-						.tool-icon img {
-							max-width: 90%; /* Slightly smaller than container */
-							max-height: 90%; /* Slightly smaller than container */
-							object-fit: contain;
-						}
-						
-						.tool-name {
-							font-weight: 700;
-							font-size: 18px;
-							color: #202124;
-							margin-bottom: 8px;
-						}
-						
-						.tool-category {
-							font-size: 14px;
-							color: #5f6368;
-							margin-bottom: 15px;
-						}
-						
-						.tools-heading {
-							text-align: center;
-							margin-bottom: 40px;
-							font-size: 36px;
-							background: linear-gradient(90deg, #202124 0%, #4285f4 100%);
-							-webkit-background-clip: text;
-							-webkit-text-fill-color: transparent;
-							background-clip: text;
-						}
-						
-						/* Responsive styles */
-						@media (max-width: 768px) {
-							.tools-grid {
-								grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-								gap: 20px;
-							}
-							
-							.tool-tile {
-								padding: 20px 15px;
-							}
-							
-							.tool-icon {
-								width: 50px;
-								height: 50px;
-								margin-bottom: 15px;
-							}
-							
-							.tool-name {
-								font-size: 16px;
-							}
-						}
-						
-						@media (max-width: 480px) {
-							.tools-grid {
-								grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-								gap: 15px;
-							}
-							
-							.tools-heading {
-								font-size: 28px;
-								margin-bottom: 30px;
-							}
-							
-							.tool-icon {
-								width: 45px;
-								height: 45px;
-							}
-							
-							.tool-name {
-								font-size: 14px;
-							}
-							
-							.tool-category {
-								font-size: 12px;
-							}
-						}
-						</style>
-						
-						<div class="display">
-							<h2 class="tools-heading">DevOps &amp; Cloud Technologies</h2>
-							
-							<div class="tools-grid">
-								<!-- Docker -->
-								<div class="tool-tile">
-									<div class="tool-icon">
-										<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker">
-									</div>
-									<h3 class="tool-name">Docker</h3>
-									<div class="tool-category">Containerization</div>
-								</div>
-								
-								<!-- Kubernetes -->
-								<div class="tool-tile">
-									<div class="tool-icon">
-										<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg" alt="Kubernetes">
-									</div>
-									<h3 class="tool-name">Kubernetes</h3>
-									<div class="tool-category">Orchestration</div>
-								</div>
-								
-								<!-- Terraform -->
-								<div class="tool-tile">
-									<div class="tool-icon">
-										<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/terraform/terraform-original.svg" alt="Terraform">
-									</div>
-									<h3 class="tool-name">Terraform</h3>
-									<div class="tool-category">Infrastructure as Code</div>
-								</div>
-								
-								<!-- AWS -->
-								<div class="tool-tile">
-									<div class="tool-icon">
-										<img src="https://www.vectorlogo.zone/logos/amazon_aws/amazon_aws-icon.svg" alt="AWS">
-									</div>
-									<h3 class="tool-name">AWS</h3>
-									<div class="tool-category">Cloud Platform</div>
-								</div>
-								
-								<!-- GCP -->
-								<div class="tool-tile">
-									<div class="tool-icon">
-										<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/googlecloud/googlecloud-original.svg" alt="GCP">
-									</div>
-									<h3 class="tool-name">GCP</h3>
-									<div class="tool-category">Cloud Platform</div>
-								</div>
-								
-								<!-- Azure -->
-								<div class="tool-tile">
-									<div class="tool-icon">
-										<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg" alt="Azure">
-									</div>
-									<h3 class="tool-name">Azure</h3>
-									<div class="tool-category">Cloud Platform</div>
-								</div>
-								
-								<!-- Vault -->
-								<div class="tool-tile">
-									<div class="tool-icon">
-										<img src="https://www.vectorlogo.zone/logos/vaultproject/vaultproject-icon.svg" alt="Vault">
-									</div>
-									<h3 class="tool-name">Vault</h3>
-									<div class="tool-category">Secret Management</div>
-								</div>
-								
-								<!-- Ansible -->
-								<div class="tool-tile">
-									<div class="tool-icon">
-										<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ansible/ansible-original.svg" alt="Ansible">
-									</div>
-									<h3 class="tool-name">Ansible</h3>
-									<div class="tool-category">Configuration Management</div>
-								</div>
-								
-								<!-- Python -->
-								<div class="tool-tile">
-									<div class="tool-icon">
-										<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python">
-									</div>
-									<h3 class="tool-name">Python</h3>
-									<div class="tool-category">Programming</div>
-								</div>
-								
-								<!-- Azure DevOps -->
-								<div class="tool-tile">
-									<div class="tool-icon">
-										<img src="https://www.vectorlogo.zone/logos/microsoft_azure/microsoft_azure-icon.svg" alt="Azure DevOps">
-									</div>
-									<h3 class="tool-name">Azure DevOps</h3>
-									<div class="tool-category">CI/CD Platform</div>
-								</div>
-								
-								<!-- GitHub Actions -->
-								<div class="tool-tile">
-									<div class="tool-icon">
-										<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub Actions">
-									</div>
-									<h3 class="tool-name">GitHub Actions</h3>
-									<div class="tool-category">CI/CD</div>
-								</div>
-								
-								<!-- Jenkins -->
-								<div class="tool-tile">
-									<div class="tool-icon">
-										<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jenkins/jenkins-original.svg" alt="Jenkins">
-									</div>
-									<h3 class="tool-name">Jenkins</h3>
-									<div class="tool-category">CI/CD</div>
-								</div>
-								
-								<!-- GitLab CI -->
-								<div class="tool-tile">
-									<div class="tool-icon">
-										<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/gitlab/gitlab-original.svg" alt="GitLab CI">
-									</div>
-									<h3 class="tool-name">GitLab CI</h3>
-									<div class="tool-category">CI/CD</div>
-								</div>
-								
-								<!-- Linux -->
-								<div class="tool-tile">
-									<div class="tool-icon">
-										<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" alt="Linux">
-									</div>
-									<h3 class="tool-name">Linux</h3>
-									<div class="tool-category">Operating System</div>
-								</div>
-								
-								<!-- Grafana -->
-								<div class="tool-tile">
-									<div class="tool-icon">
-										<img src="https://www.vectorlogo.zone/logos/grafana/grafana-icon.svg" alt="Grafana">
-									</div>
-									<h3 class="tool-name">Grafana</h3>
-									<div class="tool-category">Monitoring &amp; Visualization</div>
-								</div>
-								
-								<!-- Prometheus -->
-								<div class="tool-tile">
-									<div class="tool-icon">
-										<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prometheus/prometheus-original.svg" alt="Prometheus">
-									</div>
-									<h3 class="tool-name">Prometheus</h3>
-									<div class="tool-category">Monitoring</div>
-								</div>
-								
-								<!-- ELK -->
-								<div class="tool-tile">
-									<div class="tool-icon">
-										<img src="https://www.vectorlogo.zone/logos/elastic/elastic-icon.svg" alt="ELK Stack">
-									</div>
-									<h3 class="tool-name">ELK Stack</h3>
-									<div class="tool-category">Logging</div>
-								</div>
-								
-								<!-- Kafka -->
-								<div class="tool-tile">
-									<div class="tool-icon">
-										<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apachekafka/apachekafka-original.svg" alt="Kafka">
-									</div>
-									<h3 class="tool-name">Kafka</h3>
-									<div class="tool-category">Message Broker</div>
-								</div>
-								
-								<!-- Istio -->
-								<div class="tool-tile">
-									<div class="tool-icon">
-										<img src="https://www.vectorlogo.zone/logos/istioio/istioio-icon.svg" alt="Istio">
-									</div>
-									<h3 class="tool-name">Istio</h3>
-									<div class="tool-category">Service Mesh</div>
-								</div>
-								
-								<!-- Kiali -->
-								<div class="tool-tile">
-									<div class="tool-icon">
-										<img src="https://avatars.githubusercontent.com/u/36001875" alt="Kiali">
-									</div>
-									<h3 class="tool-name">Kiali</h3>
-									<div class="tool-category">Service Mesh UI</div>
-								</div>
-								
-								<!-- Jaeger -->
-								<div class="tool-tile">
-									<div class="tool-icon">
-										<img src="https://www.vectorlogo.zone/logos/jaegertracingio/jaegertracingio-icon.svg" alt="Jaeger">
-									</div>
-									<h3 class="tool-name">Jaeger</h3>
-									<div class="tool-category">Distributed Tracing</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
 	</div>
 	<div class="is-boxes">
 		<div class="is-box-centered is-content-bottom is-opacity-90">
@@ -1564,7 +1204,9 @@
       font-size: 32px;
     }
   }
-</style><div class="projects-section" id="1747580704066">
+</style>
+
+<div class="projects-section" id="1747580704066">
   <div class="projects-left">
     <h1>WHAT WE OFFER<br>SO FAR</h1>
     <p>Our portfolio showcases diverse projects covering everything from monolith to microservices migrations, advanced deployment strategies, and optimized CI/CD pipelines. We've implemented comprehensive DevSecOps solutions with security integrated at all levels, while automating infrastructure provisioning and configuration for maximum efficiency. Our expertise spans multi-cloud strategies, always adhering to Well-Architected Frameworks to ensure best practices. These real-world projects provide valuable experience that helps both beginners and seasoned professionals confidently clear technical interviews. We've also pioneered GenAI projects built with DevOps best practices, keeping you at the cutting edge of technology integration.</p>
@@ -1589,4 +1231,4 @@
       <img src="/s/pages/assets/images/l1Nliinterviewpreparation.png" alt="Interview Preparation">
     </div>
   </div>
-</div>c:\Users\ADMIN\Downloads\course-cards-30-percent-larger.html
+</div>
